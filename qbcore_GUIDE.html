@@ -449,7 +449,7 @@ ensure spawnmanager -- Gerencia onde os jogadores nascem
 ensure mapmanager
 ensure chat
 ensure spawnmanager
--- ... (e outros que você já tem)
+-- ... (e outros você já tem)
 
 -- Agora, os recursos do QBcore!
 ensure qb-core       -- O coração do framework
@@ -656,7 +656,7 @@ end)
                                     <span class="ml-2">Carregando explicação...</span>
                                 </div>
                             </div>
-                        </div>
+</div>
                         <p class="mt-4 text-gray-600">
                             <strong>Explicação linha a linha do `client.lua`:</strong><br>
                             - `local NUIAberta = false`: Uma pequena "bandeira" que guardamos para saber se a sua tela NUI está visível ou não. Começa como `false` (fechada).
@@ -756,7 +756,7 @@ end, true) -- 'true' significa que este comando é RESTRITO (só admins por padr
                                     <span class="ml-2">Carregando explicação...</span>
                                 </div>
                             </div>
-                        </div>
+</div>
                         <p class="mt-4 text-gray-600">
                             <strong>Explicação linha a linha do `server.lua`:</strong><br>
                             - `RegisterNetEvent('meuRecurso:fazerAlgoNoServidor')`: Essa linha "registra" um evento de rede. Significa que o servidor está pronto para "ouvir" quando um `client.lua` dispara um evento com esse nome. Pense nisso como ligar um telefone para que as ligações possam ser recebidas.
@@ -826,7 +826,7 @@ end, true) -- 'true' significa que este comando é RESTRITO (só admins por padr
                                     <span class="ml-2">Carregando explicação...</span>
                                 </div>
                             </div>
-                        </div>
+</div>
                         <p class="mt-4 text-gray-600">
                             <strong>Explicação linha a linha do `index.html`:</strong><br>
                             - `<!DOCTYPE html>`, `<html>`, `<head>`, `<body>`: São a estrutura básica de qualquer página HTML. Não se preocupe muito com elas por agora, são o padrão.
@@ -918,7 +918,7 @@ button:active {
                                     <span class="ml-2">Carregando explicação...</span>
                                 </div>
                             </div>
-                        </div>
+</div>
                         <p class="mt-4 text-gray-600">
                             <strong>Explicação linha a linha do `style.css`:</strong><br>
                             - `body { ... }`: Essas regras são para o corpo da sua página HTML, que é o fundo.
@@ -942,6 +942,15 @@ button:active {
                         <p class="mb-4 text-gray-600">O `script.js` é onde a mágica da interação acontece. Ele é o "ouvido" e a "voz" da sua NUI. Ele ouve o que o `client.lua` manda, mostra/esconde a tela, e também ouve o que o jogador faz (como cliques em botões) para mandar de volta para o `client.lua`.</p>
                          <div class="code-block">
                             <pre><code class="language-javascript">document.addEventListener('DOMContentLoaded', function() {
+    // ATENÇÃO SEGURANÇA DA CHAVE DE API:
+    // Para que as funcionalidades "Explicar Código" e "Obter Dica" funcionem, você precisa de uma chave de API do Google Gemini.
+    // **NUNCA COLOQUE SUA CHAVE DE API DIRETAMENTE AQUI SE FOR PUBLICAR ESTE ARQUIVO NO GITHUB OU EM QUALQUER SERVIÇO PÚBLICO!**
+    // Isso exporia sua chave e poderia gerar custos indevidos.
+    // Para uso LOCAL (com python -m http.server), você pode colar sua chave aqui.
+    // Para um site público, você precisaria de um servidor intermediário (proxy) para ocultar a chave.
+    const apiKey = ""; // <--- COLOQUE SUA CHAVE DE API AQUI PARA TESTE LOCALMENTE ---
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
     // Pegamos os elementos HTML pelos seus IDs para poder mexer neles com JavaScript.
     const container = document.getElementById('container');
     const btnInteragir = document.getElementById('btnInteragir');
@@ -1054,7 +1063,7 @@ button:active {
                                     - `https://${GetParentResourceName()}/`: `GetParentResourceName()` é uma função mágica do FiveM que te dá o nome do seu recurso (ex: `meu_primeiro_recurso`). A URL é construída para "chamar" um `callback` no Lua.
                                     - `/cliqueDoBotao`: É o nome do `callback` que você registrou lá no seu `client.lua` com `RegisterNUICallback('cliqueDoBotao', ...)`.
                                     - `method: 'POST'`: Diz que estamos enviando dados.
-                                    - `headers: { 'Content-Type': 'application/json; charset=UTF8' }`: Informa que os dados que estamos enviando são no formato JSON.
+                                    - `headers: { 'Content-Type': 'application/json; charset=UTF-8' }`: Informa que os dados que estamos enviando são no formato JSON.
                                     - `body: JSON.stringify({ ... })`: **MUITA ATENÇÃO AQUI!** Os dados que você quer enviar para o Lua (como o `idDoBotao` e `valorAleatorio`) devem ser um objeto JavaScript, e depois transformados em uma **string JSON** usando `JSON.stringify()`. O Lua vai receber isso como uma tabela.
                                 - `.then(resposta => resposta.json())`: Depois que você envia a mensagem, o Lua pode mandar uma resposta de volta. Essa linha "espera" essa resposta e tenta convertê-la de JSON para um objeto JavaScript.
                                 - `.then(dadosDoLua => { ... })`: Uma vez que a resposta do Lua chega e é convertida, este bloco é executado. Você pode usar `dadosDoLua` para atualizar a tela ou fazer algo com o que o Lua te disse.
@@ -1590,10 +1599,13 @@ console.warn('NUI AVISO: Dados incompletos.');
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const apiKey = ""; // Sua chave de API do Google Gemini vai aqui!
-        // IMPORTANTE: Nunca compartilhe esta chave em repositórios públicos.
-        // Se você está usando localmente, pode colar a chave aqui.
-        // Em um ambiente de produção real, use variáveis de ambiente.
+        // ATENÇÃO SEGURANÇA DA CHAVE DE API:
+        // Para que as funcionalidades "Explicar Código" e "Obter Dica" funcionem, você precisa de uma chave de API do Google Gemini.
+        // **NUNCA COLOQUE SUA CHAVE DE API DIRETAMENTE AQUI SE FOR PUBLICAR ESTE ARQUIVO NO GITHUB OU EM QUALQUER SERVIÇO PÚBLICO!**
+        // Isso exporia sua chave e poderia gerar custos indevidos.
+        // Para uso LOCAL (com python -m http.server), você pode colar sua chave aqui.
+        // Para um site público, você precisaria de um servidor intermediário (proxy) para ocultar a chave.
+        const apiKey = ""; // <--- COLOQUE SUA CHAVE DE API AQUI PARA TESTE LOCALMENTE ---
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
         // --- Code Block Copy Functionality ---
@@ -1640,7 +1652,7 @@ console.warn('NUI AVISO: Dados incompletos.');
             explainButton.addEventListener('click', async () => {
                 if (apiKey === "") {
                     explanationArea.classList.remove('hidden');
-                    explanationContent.innerHTML = '<span class="text-red-600">Erro: Chave de API Gemini não configurada. Por favor, insira sua chave no `script.js` para usar este recurso.</span>';
+                    explanationContent.innerHTML = '<span class="text-red-600 font-bold">⚠️ Erro de API: Chave de API Gemini não configurada.</span> <br>Para usar este recurso, você precisa obter uma chave de API do Google Gemini e colá-la na linha `const apiKey = "";` no seu arquivo `script.js`. <br><br><span class="text-red-600">**IMPORTANTE:** Não faça commit da sua chave para repositórios públicos no GitHub! Este recurso só funcionará localmente sem uma solução de proxy.</span>';
                     explanationLoadingSpinner.classList.add('hidden');
                     return;
                 }
@@ -1784,7 +1796,7 @@ console.warn('NUI AVISO: Dados incompletos.');
 
             if (apiKey === "") {
                 hintArea.classList.remove('hidden');
-                hintContent.innerHTML = '<span class="text-red-600">Erro: Chave de API Gemini não configurada. Por favor, insira sua chave no `script.js` para usar este recurso.</span>';
+                hintContent.innerHTML = '<span class="text-red-600 font-bold">⚠️ Erro de API: Chave de API Gemini não configurada.</span> <br>Para usar este recurso, você precisa obter uma chave de API do Google Gemini e colá-la na linha `const apiKey = "";` no seu arquivo `script.js`. <br><br><span class="text-red-600">**IMPORTANTE:** Não faça commit da sua chave para repositórios públicos no GitHub! Este recurso só funcionará localmente sem uma solução de proxy.</span>';
                 hintLoadingSpinner.classList.add('hidden');
                 return;
             }
