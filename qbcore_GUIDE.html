@@ -7,54 +7,222 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <!-- 
-    Chosen Palette: "TechDrift" - A clean, modern palette with a light gray background, dark text for readability, and a cool blue accent for interactive elements, creating a focused and professional learning environment.
-    Application Structure Plan: A two-column layout with a sticky sidebar for navigation and a main content area. This structure is ideal for educational content as it provides a persistent "map" of the course, allowing users to jump between sections without losing context. On mobile, the sidebar collapses into a "Table of Contents" button for a clean experience. The user flow is from top to bottom, guided by the sidebar navigation.
+    Chosen Palette: "TechDrift Redux" - An enhanced, modern palette building on the previous one. It retains the light gray background and dark text for readability but introduces a more vibrant and consistent blue accent (#3b82f6) for interactive elements, with subtle gradients and shadows for depth. The typography uses 'Inter' for body and 'Fira Code' for code for clear distinction.
+    Application Structure Plan: Still a two-column layout, but with improved visual hierarchy, more generous spacing, and a cleaner sidebar. The mobile view now prioritizes a clear "Table of Contents" toggle.
     Visualization & Content Choices: 
-    - Report Info: Code examples (Lua, HTML, CSS, JS). Goal: Readability & Usability. Viz/Method: Styled HTML `<pre>` and `<code>` blocks that mimic a code editor's appearance, including a "Copy" button. Interaction: Click to copy. Justification: Drastically improves user experience over poorly formatted text.
-    - Report Info: File structure diagram. Goal: Clarity. Viz/Method: Visual representation using nested HTML `<div>`s styled with Tailwind to look like a file tree. Interaction: None, purely visual. Justification: More intuitive and professional than a plain text list.
-    - Report Info: Client/Server communication flow. Goal: Engagement & Understanding. Viz/Method: Interactive diagram built with HTML Flexbox and styled with Tailwind. Interaction: Hovering over elements reveals tooltips or highlights related text, explaining each step of the communication process. Justification: Turns a passive reading task into an active learning experience, reinforcing a core concept of the course.
-    - Report Info: Code Explanation (LLM). Goal: Deeper Understanding. Viz/Method: Integrated button "Explicar Código ✨" that fetches LLM explanation. Interaction: Click to get explanation, explanation appears below code block. Justification: Provides immediate, contextual help for complex code.
-    - Report Info: Challenge Hints (LLM). Goal: Guided Learning. Viz/Method: Dropdown to select challenge and button "Obter Dica ✨" that fetches LLM hint. Interaction: Select challenge, click button, hint appears. Justification: Encourages problem-solving with tailored assistance.
-    - Report Info: Server Setup Steps. Goal: Step-by-step guidance. Viz/Method: Ordered list with detailed steps. Interaction: None, clear sequential information. Justification: Provides actionable instructions for environment setup.
-    - Report Info: FiveM Event Types. Goal: Illustrate event directionality. Viz/Method: Simple text-based visual with arrows (Unicode). Interaction: None. Justification: Clearly distinguishes client-to-server, server-to-client, etc.
+    - Code examples: Enhanced styling to look more like a professional editor, with improved color contrast and subtle shadows.
+    - File structure diagram: Retains visual clarity with improved box models and spacing.
+    - Interactive communication flow diagram: More distinct visual separation for components, with clearer arrow indicators and an animated tooltip for engagement.
+    - Buttons: More prominent and visually appealing with clear hover/active states.
+    - Section headers: Larger, bolder, with a subtle underline for better hierarchy.
+    - General improvements: Increased padding, refined border-radii, and consistent shadows for a polished, modern feel.
     CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
     -->
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        code, .font-mono { font-family: 'Fira Code', monospace; }
-        .sidebar-link.active {
-            color: #3b82f6;
-            font-weight: 600;
-            border-left-color: #3b82f6;
+        /* General Body Styles */
+        body { 
+            font-family: 'Inter', sans-serif; 
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
+        /* Code Specific Font */
+        code, .font-mono { 
+            font-family: 'Fira Code', monospace; 
+        }
+
+        /* Sidebar Link Active State - Enhanced */
+        .sidebar-link.active {
+            color: #2563eb; /* Deeper blue for active link */
+            font-weight: 600; /* Bolder */
+            border-left-color: #2563eb; /* Matching border color */
+            background-color: #e0f2fe; /* Light blue background for active */
+            padding-left: 1.5rem; /* Increased padding for emphasis */
+            border-radius: 0 0.5rem 0.5rem 0; /* Rounded on the right */
+            transition: all 0.2s ease-in-out; /* Smooth transition */
+        }
+        .sidebar-link {
+            transition: all 0.2s ease-in-out; /* Smooth transition for all links */
+            border-left: 2px solid transparent; /* Default transparent border */
+            padding-left: 1rem; /* Default padding */
+        }
+        .sidebar-link:hover:not(.active) {
+            background-color: #f3f4f6; /* Light gray on hover */
+            border-left-color: #93c5fd; /* Lighter blue border on hover */
+        }
+
+        /* Code Block Styling - Enhanced */
         .code-block {
             position: relative;
-            background-color: #1f2937; /* Dark background for code */
-            border-radius: 0.5rem; /* rounded-lg */
-            padding: 1rem; /* p-4 */
-            padding-top: 2rem; /* Adjusted for buttons */
+            background-color: #2c3e50; /* Darker blue-gray for code */
+            border-radius: 0.75rem; /* More rounded corners */
+            padding: 1.5rem; /* More padding */
+            padding-top: 3rem; /* Adjusted for buttons */
             overflow-x: auto;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+            margin-top: 1.5rem; /* More separation */
+            border: 1px solid rgba(60, 80, 100, 0.7); /* Subtle border */
         }
         .code-block pre {
             margin: 0;
             padding: 0;
-            color: #f3f4f6; /* Light text for code */
-            font-size: 0.875rem; /* text-sm */
-            line-height: 1.5;
+            color: #ecf0f1; /* Lighter text for code */
+            font-size: 0.95rem; /* Slightly larger font */
+            line-height: 1.6; /* Improved line height */
+        }
+        .code-block button {
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+        .code-block button:hover {
+            transform: translateY(-2px);
+        }
+        .code-block button:active {
+            transform: translateY(0);
+        }
+
+        /* Explanation Area - Improved */
+        .explanation-area {
+            background-color: #eff6ff; /* Very light blue */
+            border-color: #93c5fd; /* Soft blue border */
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06); /* Inner shadow */
+        }
+        .explanation-area p {
+            color: #1f2937; /* Dark text for readability */
+        }
+
+        /* Interactive Flow Diagram - Refined */
+        .flow-item {
+            cursor: help; /* Indicates interactivity */
+            transition: all 0.3s ease-in-out;
+            border: 2px solid #60a5fa; /* Blue border */
+            background-color: #dbeafe; /* Lighter blue background */
+            color: #1e3a8a; /* Darker blue text */
+            font-weight: 600;
+        }
+        .flow-item:hover {
+            transform: translateY(-5px) scale(1.03); /* Lift and grow on hover */
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3); /* Blue shadow */
+        }
+        .flow-arrow {
+            transition: transform 0.3s ease-in-out;
+        }
+        .flow-item:hover + .flex-col > .flow-arrow,
+        .flow-arrow:hover {
+            transform: scaleX(1.1); /* Stretch arrow on hover */
+            color: #2563eb; /* Darker blue for arrow */
+        }
+        #flow-info-box {
+            background-color: #e0f2fe; /* Light blue background */
+            border: 1px solid #93c5fd; /* Soft blue border */
+            border-radius: 0.75rem;
+            font-style: italic;
+            color: #3b82f6;
+            min-height: 60px; /* Increased min-height for better visibility */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem;
+        }
+
+        /* General Section & Article Styling */
+        section {
+            background-color: #fdfdfd; /* Slightly off-white */
+            border-radius: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Soft shadow */
+            padding: 2.5rem; /* More padding for sections */
+            margin-bottom: 2rem; /* More space between sections */
+            border: 1px solid #e5e7eb; /* Light border */
+        }
+        h2 {
+            border-bottom: 3px solid #d1d5db; /* Thicker, lighter border for H2 */
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+            color: #1f2937; /* Darker heading text */
+        }
+        article {
+            background-color: #ffffff; /* Pure white for articles */
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Lighter shadow for articles */
+            padding: 1.75rem; /* More padding for articles */
+            margin-bottom: 1.5rem;
+            border: 1px solid #f3f4f6; /* Very light border */
+        }
+        h3 {
+            color: #2d3748; /* Darker heading text */
+            margin-bottom: 1rem;
+        }
+        p, ul, ol {
+            line-height: 1.7; /* Improved line spacing */
+            color: #374151; /* Darker gray for body text */
+        }
+        a {
+            color: #3b82f6; /* Consistent blue for links */
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #2563eb; /* Darker blue on hover */
+        }
+        ul.list-disc, ol.list-decimal {
+            margin-left: 1.5rem; /* Indent lists properly */
+        }
+        ul.list-circle {
+            list-style-type: circle;
+        }
+        
+        /* Mobile Specific Styles */
+        @media (max-width: 767px) {
+            #mobile-nav {
+                width: 75%; /* Make mobile nav take more space */
+                box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+            }
+            .sidebar-link.active {
+                padding-left: 1.5rem; /* Keep consistent padding */
+            }
+        }
+        
+        /* Loading Spinner */
+        .loading-spinner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b82f6; /* Spinner color */
+        }
+        .loading-spinner div {
+            border-top-color: #3b82f6;
+        }
+
+        /* Challenge/Hint Area Styling */
+        #hint-area {
+            background-color: #e6fffa; /* Light teal for hints */
+            border-color: #81e6d9;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        #hint-area p {
+            color: #00796b; /* Dark teal text */
+        }
+        #hint-area .loading-spinner div {
+            border-top-color: #00796b;
         }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <div class="flex flex-col md:flex-row">
+    <div class="flex flex-col md:flex-row min-h-screen">
         <!-- Mobile Header -->
-        <header class="md:hidden sticky top-0 bg-white/80 backdrop-blur-sm z-20 border-b border-gray-200">
+        <header class="md:hidden sticky top-0 bg-white/90 backdrop-blur-md z-20 border-b border-gray-200 shadow-sm">
             <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-                <h1 class="text-lg font-bold text-blue-600">Curso FiveM NUI</h1>
-                <button id="mobileMenuButton" class="p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <h1 class="text-xl font-bold text-blue-600">Curso FiveM NUI</h1>
+                <button id="mobileMenuButton" class="p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+                    <svg class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
                     </svg>
                 </button>
@@ -62,149 +230,149 @@
         </header>
 
         <!-- Sidebar Navigation -->
-        <aside id="sidebar" class="hidden md:block fixed md:sticky top-0 h-screen w-64 bg-white border-r border-gray-200 overflow-y-auto shrink-0 z-10 p-6 transition-transform -translate-x-full md:translate-x-0">
-            <h1 class="text-xl font-bold text-blue-600 mb-6">Curso FiveM NUI</h1>
+        <aside id="sidebar" class="hidden md:block fixed md:sticky top-0 h-screen w-72 bg-white border-r border-gray-200 overflow-y-auto shrink-0 z-10 p-6 shadow-lg md:shadow-none transition-transform -translate-x-full md:translate-x-0">
+            <h1 class="text-2xl font-bold text-blue-700 mb-8 mt-4">Curso FiveM NUI</h1>
             <nav id="desktop-nav" class="space-y-2">
                 <!-- Navigation links will be injected by JS -->
             </nav>
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 p-6 md:p-10 lg:p-12">
+        <main class="flex-1 p-6 md:p-10 lg:p-12 bg-gradient-to-br from-gray-50 to-blue-50">
             <div class="max-w-4xl mx-auto">
                 
                 <section id="s1" class="mb-16 scroll-mt-24">
-                    <h2 class="text-3xl font-bold border-b border-gray-300 pb-2 mb-4">1. Introdução</h2>
-                    <p class="text-lg text-gray-600 mb-6">Olá, futuro(a) desenvolvedor(a) de FiveM! Bem-vindo(a) ao seu guia prático para desvendar a arte de conectar o front-end (a parte que você vê) com o back-end (a lógica por trás dos panos) no universo do FiveM, utilizando o poderoso framework QBcore e as interfaces web chamadas NUI. Este material foi feito sob medida para você, que está dando os primeiros passos e quer aprender de forma clara, didática e divertida!</p>
+                    <h2 class="text-4xl font-extrabold border-b border-blue-200 pb-4 mb-8 text-blue-800">1. Introdução</h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-8">Olá, futuro(a) desenvolvedor(a) de FiveM! Bem-vindo(a) ao seu guia prático para desvendar a arte de conectar o front-end (a parte que você vê) com o back-end (a lógica por trás dos panos) no universo do FiveM, utilizando o poderoso framework QBcore e as interfaces web chamadas NUI. Este material foi feito sob medida para você, que está dando os primeiros passos e quer aprender de forma clara, didática e divertida!</p>
                     
-                    <article id="s1_1" class="mb-8 p-6 bg-white rounded-lg shadow-sm scroll-mt-24">
-                        <h3 class="text-2xl font-semibold mb-3">1.1 Objetivos do Curso</h3>
-                        <p class="mb-4">Ao final deste curso, você não apenas entenderá os conceitos, mas terá as mãos na massa e as habilidades para:</p>
+                    <article id="s1_1" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">1.1 Objetivos do Curso</h3>
+                        <p class="mb-4 text-gray-600">Ao final deste curso, você não apenas entenderá os conceitos, mas terá as mãos na massa e as habilidades para:</p>
                         <ul class="list-disc list-inside space-y-2 text-gray-700">
-                            <li><strong>Entender a Conversa:</strong> Compreender como o lado visível (sua interface web `NUI`) e o lado da lógica (seus scripts `Lua`) "conversam" entre si no FiveM.</li>
+                            <li><strong>Entender a Conversa:</strong> Compreender como o lado visível (sua interface web NUI) e o lado da lógica (seus scripts Lua) "conversam" entre si no FiveM.</li>
                             <li><strong>Organizar seus Projetos:</strong> Aprender a organizar seus arquivos e recursos de forma simples e eficaz, preparando o terreno para scripts futuros.</li>
                             <li><strong>Criar Coisas que Funcionam:</strong> Desenvolver seus primeiros scripts que se comunicam em tempo real, fazendo a mágica acontecer entre o que o jogador vê e o que o servidor processa.</li>
-                            <li><strong>Montar Telas Bonitas:</strong> Usar `HTML`, `CSS` e `JavaScript` para criar interfaces de usuário intuitivas e com um visual que você mesmo(a) vai gostar!</li>
+                            <li><strong>Montar Telas Bonitas:</strong> Usar HTML, CSS e JavaScript para criar interfaces de usuário intuitivas e com um visual que você mesmo(a) vai gostar!</li>
                             <li><strong>Aprender Boas Maneiras de Programar:</strong> Pegar algumas dicas essenciais para escrever códigos limpos, seguros e que funcionam sem dor de cabeça.</li>
                         </ul>
                     </article>
 
-                    <article id="s1_2" class="mb-8 p-6 bg-white rounded-lg shadow-sm scroll-mt-24">
-                        <h3 class="text-2xl font-semibold mb-3">1.2 Público-Alvo</h3>
-                        <p class="mb-2">Este curso foi carinhosamente preparado para:</p>
+                    <article id="s1_2" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">1.2 Público-Alvo</h3>
+                        <p class="mb-2 text-gray-600">Este curso foi carinhosamente preparado para:</p>
                         <ul class="list-disc list-inside space-y-2 text-gray-700">
                            <li><strong>Iniciantes na Programação:</strong> Se você está começando a programar ou tem apenas uma noção básica (tipo, sabe o que é uma variável ou um `if`), este é o seu lugar!</li>
                            <li><strong>Curiosos do FiveM:</strong> Se você joga FiveM e sempre se perguntou como as coisas funcionam por trás dos menus e sistemas, prepare-se para descobrir!</li>
-                           <li><strong>Quem Conhece um Pouco de Web:</strong> Se você já brincou com `HTML`, `CSS` e `JavaScript`, vai se sentir em casa. Se não brincou, não se preocupe, vamos explicar o essencial!</li>
+                           <li><strong>Quem Conhece um Pouco de Web:</strong> Se você já brincou com HTML, CSS e JavaScript, vai se sentir em casa. Se não brincou, não se preocupe, vamos explicar o essencial!</li>
                            <li><strong>Aprendizes Práticos:</strong> Se você aprende fazendo, vai amar os exemplos diretos e os desafios para colocar a mão na massa.</li>
                         </ul>
                     </article>
 
-                    <article id="s1_3" class="mb-8 p-6 bg-white rounded-lg shadow-sm scroll-mt-24">
-                        <h3 class="text-2xl font-semibold mb-3">1.3 Ferramentas Necessárias</h3>
-                        <p class="mb-4">Para embarcar nessa jornada, você precisará de algumas ferramentas. É como montar a sua bancada de trabalho de desenvolvedor!</p>
+                    <article id="s1_3" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">1.3 Ferramentas Necessárias</h3>
+                        <p class="mb-4 text-gray-600">Para embarcar nessa jornada, você precisará de algumas ferramentas. É como montar a sua bancada de trabalho de desenvolvedor!</p>
                         <ul class="list-disc list-inside space-y-2 text-gray-700">
                            <li><strong>FXServer:</strong> Pense nele como o "coração" do seu servidor FiveM. É onde o jogo roda. Você vai precisar de um funcionando para testar seus scripts. Não se preocupe, vamos te ajudar a configurar!</li>
-                           <li><strong>Editor de Código:</strong> É o seu "caderno" e "caneta" superpoderosos para escrever código. Eu super recomendo o `VSCode` (Visual Studio Code). Ele é gratuito, leve e tem muitos recursos que facilitam a vida, como cores para o código (destaque de sintaxe) e sugestões automáticas.</li>
-                           <li><strong>Navegador Web:</strong> Você já usa um! `Chrome`, `Firefox` ou `Edge`. Eles serão importantes para ver e "consertar" (depurar) a parte visual da sua interface `NUI`.</li>
+                           <li><strong>Editor de Código:</strong> É o seu "caderno" e "caneta" superpoderosos para escrever código. Eu super recomendo o **VSCode** (Visual Studio Code). Ele é gratuito, leve e tem muitos recursos que facilitam a vida, como cores para o código (destaque de sintaxe) e sugestões automáticas.</li>
+                           <li><strong>Navegador Web:</strong> Você já usa um! Chrome, Firefox ou Edge. Eles serão importantes para ver e "consertar" (depurar) a parte visual da sua interface NUI.</li>
                            <li><strong>QBcore Framework:</strong> É um "kit de ferramentas" super popular para criar servidores de Roleplay no FiveM. Ele já vem com um monte de coisas prontas (inventário, dinheiro, etc.), o que nos ajuda a focar na integração.</li>
                         </ul>
                     </article>
                 </section>
 
                 <section id="s2" class="mb-16 scroll-mt-24">
-                    <h2 class="text-3xl font-bold border-b border-gray-300 pb-2 mb-4">2. Conceitos Básicos: O Alicerce do seu Conhecimento</h2>
-                    <p class="text-lg text-gray-600 mb-6">Antes de mergulhar no código, vamos entender alguns pilares importantes. Imagine que estamos construindo uma casa: precisamos saber onde colocar o alicerce e quais materiais usar. Aqui, o alicerce são os recursos, a `NUI` e a forma como tudo se comunica!</p>
+                    <h2 class="text-4xl font-extrabold border-b border-blue-200 pb-4 mb-8 text-blue-800">2. Conceitos Básicos: O Alicerce do seu Conhecimento</h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-8">Antes de mergulhar no código, vamos entender alguns pilares importantes. Imagine que estamos construindo uma casa: precisamos saber onde colocar o alicerce e quais materiais usar. Aqui, o alicerce são os recursos, a NUI e a forma como tudo se comunica!</p>
 
-                    <article id="s2_1" class="mb-8 p-6 bg-white rounded-lg shadow-sm scroll-mt-24">
-                        <h3 class="text-2xl font-semibold mb-3">2.1 Estrutura de Recursos no FiveM: Organizando suas Ideias</h3>
-                        <p class="mb-4">No FiveM, tudo o que adiciona uma funcionalidade ao seu servidor é chamado de **Recurso** (ou "`Resource`" em inglês). Pense em um recurso como um "módulo" ou uma "pasta organizada" que contém todos os arquivos necessários para uma função específica. Por exemplo, você pode ter um recurso para o sistema de inventário, outro para uma loja de carros, e o nosso será para a integração `NUI`!</p>
-                        <p class="mb-4">Cada recurso vive em sua própria pasta, que fica dentro da pasta `resources` do seu `FXServer`. É como ter gavetas separadas para cada tipo de ferramenta na sua caixa.</p>
-                        <p class="mb-4">O grande chefe de cada recurso é um arquivo chamado **`fxmanifest.lua`**. Esse é o "cartão de visitas" do seu recurso. Ele diz ao FiveM:</p>
+                    <article id="s2_1" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">2.1 Estrutura de Recursos no FiveM: Organizando suas Ideias</h3>
+                        <p class="mb-4 text-gray-600">No FiveM, tudo o que adiciona uma funcionalidade ao seu servidor é chamado de **Recurso** (ou "Resource" em inglês). Pense em um recurso como um "módulo" ou uma "pasta organizada" que contém todos os arquivos necessários para uma função específica. Por exemplo, você pode ter um recurso para o sistema de inventário, outro para uma loja de carros, e o nosso será para a integração NUI!</p>
+                        <p class="mb-4 text-gray-600">Cada recurso vive em sua própria pasta, que fica dentro da pasta `resources` do seu FXServer. É como ter gavetas separadas para cada tipo de ferramenta na sua caixa.</p>
+                        <p class="mb-4 text-gray-600">O grande chefe de cada recurso é um arquivo chamado **`fxmanifest.lua`**. Esse é o "cartão de visitas" do seu recurso. Ele diz ao FiveM:</p>
                         <ul class="list-disc list-inside space-y-2 text-gray-700">
                             <li>Qual é o nome do seu recurso.</li>
                             <li>Quem o criou.</li>
-                            <li>E, o mais importante, **quais arquivos ele precisa carregar** para funcionar, e se esses arquivos são para o lado do jogador (`cliente`) ou para o lado do `servidor`.</li>
+                            <li>E, o mais importante, **quais arquivos ele precisa carregar** para funcionar, e se esses arquivos são para o lado do jogador (cliente) ou para o lado do servidor.</li>
                         </ul>
-                        <p>Sem um `fxmanifest.lua` bem feito, seu recurso simplesmente não vai funcionar! É como tentar usar uma ferramenta sem saber o manual de instruções.</p>
+                        <p class="text-gray-600">Sem um `fxmanifest.lua` bem feito, seu recurso simplesmente não vai funcionar! É como tentar usar uma ferramenta sem saber o manual de instruções.</p>
                     </article>
 
-                    <article id="s2_2" class="mb-8 p-6 bg-white rounded-lg shadow-sm scroll-mt-24">
-                        <h3 class="text-2xl font-semibold mb-3">2.2 O que é NUI? A Interface que o Jogador Vê!</h3>
-                        <p class="mb-4">`NUI` (**Native UI**) é um recurso super bacana do FiveM que nos permite criar telas e menus personalizados no jogo usando o que já conhecemos do desenvolvimento web: `HTML`, `CSS` e `JavaScript`! Sim, é isso mesmo! Aquelas tecnologias que você usa para fazer sites, agora no FiveM!</p>
-                        <p class="mb-4">Imagine que o FiveM tem um "mini-navegador" escondido dentro dele. A `NUI` usa esse mini-navegador para mostrar suas páginas `HTML`. Isso significa que você pode criar:</p>
+                    <article id="s2_2" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">2.2 O que é NUI? A Interface que o Jogador Vê!</h3>
+                        <p class="mb-4 text-gray-600">**NUI (Native UI)** é um recurso super bacana do FiveM que nos permite criar telas e menus personalizados no jogo usando o que já conhecemos do desenvolvimento web: **HTML**, **CSS** e **JavaScript**! Sim, é isso mesmo! Aquelas tecnologias que você usa para fazer sites, agora no FiveM!</p>
+                        <p class="mb-4 text-gray-600">Imagine que o FiveM tem um "mini-navegador" escondido dentro dele. A NUI usa esse mini-navegador para mostrar suas páginas HTML. Isso significa que você pode criar:</p>
                         <ul class="list-disc list-inside space-y-2 text-gray-700">
                             <li>Menus bonitos para lojas, bancos, empregos.</li>
-                            <li>Telas de `HUD` (aqueles indicadores de vida, colete, etc.) totalmente personalizadas.</li>
+                            <li>Telas de HUD (aqueles indicadores de vida, colete, etc.) totalmente personalizadas.</li>
                             <li>Sistemas de notificação (aqueles avisinhos que aparecem na tela).</li>
                             <li>E muito mais, com total liberdade de design!</li>
                         </ul>
-                        <p class="mb-4">A grande vantagem da `NUI` é que se você já tem um pouquinho de `HTML`, `CSS` e `JavaScript`, você já está no caminho certo para criar coisas visuais incríveis no FiveM, sem ter que aprender uma linguagem de interface totalmente nova.</p>
+                        <p class="mb-4 text-gray-600">A grande vantagem da NUI é que se você já tem um pouquinho de HTML, CSS e JavaScript, você já está no caminho certo para criar coisas visuais incríveis no FiveM, sem ter que aprender uma linguagem de interface totalmente nova.</p>
                     </article>
 
-                    <article id="s2_3" class="mb-8 p-6 bg-white rounded-lg shadow-sm scroll-mt-24">
-                        <h3 class="text-2xl font-semibold mb-3">2.3 A Grande Conversa: Client ↔ Server ↔ NUI</h3>
-                        <p class="mb-4">A mágica acontece quando as diferentes partes do seu script "conversam". No FiveM, temos três "personagens" principais que trocam mensagens:</p>
+                    <article id="s2_3" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">2.3 A Grande Conversa: Client ↔ Server ↔ NUI</h3>
+                        <p class="mb-4 text-gray-600">A mágica acontece quando as diferentes partes do seu script "conversam". No FiveM, temos três "personagens" principais que trocam mensagens:</p>
                         <ul class="list-disc list-inside space-y-2 text-gray-700">
-                            <li><strong>Cliente (`Client`):</strong> É o que roda no computador de cada jogador. Ele cuida do que o jogador vê e faz individualmente.</li>
-                            <li><strong>Servidor (`Server`):</strong> É o que roda no computador principal do jogo. Ele cuida da lógica geral, do banco de dados e de tudo o que afeta *todos* os jogadores ou que precisa ser seguro.</li>
-                            <li><strong>NUI (`HTML`/`JS`):</strong> É a sua interface web que o jogador vê na tela.</li>
+                            <li><strong>Cliente (Client):</strong> É o que roda no computador de cada jogador. Ele cuida do que o jogador vê e faz individualmente.</li>
+                            <li><strong>Servidor (Server):</strong> É o que roda no computador principal do jogo. Ele cuida da lógica geral, do banco de dados e de tudo o que afeta *todos* os jogadores ou que precisa ser seguro.</li>
+                            <li><strong>NUI (HTML/JS):</strong> É a sua interface web que o jogador vê na tela.</li>
                         </ul>
-                        <p class="mb-4">A comunicação entre `Cliente` e `Servidor` é feita através de **Eventos**. E a comunicação entre `Cliente` e `NUI` é feita de um jeito especial. Entenda o fluxo principal abaixo e passe o mouse para ver os detalhes:</p>
+                        <p class="mb-4 text-gray-600">A comunicação entre Cliente e Servidor é feita através de **Eventos**. E a comunicação entre Cliente e NUI é feita de um jeito especial. Entenda o fluxo principal abaixo e passe o mouse para ver os detalhes:</p>
                         
-                        <h4 class="text-xl font-semibold mb-2 mt-4">Tipos de Eventos Principais:</h4>
-                        <div class="mb-4 p-4 bg-gray-100 rounded-lg text-gray-700">
-                            <p class="font-bold mb-2">Cliente ➡ Servidor (`Client-to-Server`):</p>
-                            <p class="mb-2">Um jogador faz algo (ex: compra um item), e o script do cliente precisa avisar o servidor sobre isso. O servidor então processa a compra de forma segura.</p>
-                            <p class="font-mono text-blue-600">No script do Cliente (`Lua`): `TriggerServerEvent('nomeDoEventoNoServidor', dados)`</p>
-                            <p class="font-mono text-green-600">No script do Servidor (`Lua`): Primeiro, registre o evento: `RegisterNetEvent('nomeDoEventoNoServidor')`</p>
-                            <p class="font-mono text-green-600">No script do Servidor (`Lua`): Depois, escute-o: `AddEventHandler('nomeDoEventoNoServidor', function(dados) ... end)`</p>
+                        <h4 class="text-xl font-bold mb-4 mt-8 text-gray-800">Tipos de Eventos Principais:</h4>
+                        <div class="mb-6 p-5 bg-blue-50 rounded-lg text-gray-700 border border-blue-200 shadow-sm">
+                            <p class="font-bold mb-2 text-blue-700">Cliente ➡ Servidor (Client-to-Server):</p>
+                            <p class="mb-3">Um jogador faz algo (ex: compra um item), e o script do cliente precisa avisar o servidor sobre isso. O servidor então processa a compra de forma segura.</p>
+                            <p class="font-mono text-blue-600 bg-blue-100 p-2 rounded-md mb-2">No script do Cliente (Lua): `TriggerServerEvent('nomeDoEventoNoServidor', dados)`</p>
+                            <p class="font-mono text-green-600 bg-green-100 p-2 rounded-md mb-2">No script do Servidor (Lua): Primeiro, registre o evento: `RegisterNetEvent('nomeDoEventoNoServidor')`</p>
+                            <p class="font-mono text-green-600 bg-green-100 p-2 rounded-md">No script do Servidor (Lua): Depois, escute-o: `AddEventHandler('nomeDoEventoNoServidor', function(dados) ... end)`</p>
                         </div>
-                        <div class="mb-4 p-4 bg-gray-100 rounded-lg text-gray-700">
-                            <p class="font-bold mb-2">Servidor ➡ Cliente (`Server-to-Client`):</p>
-                            <p class="mb-2">O servidor precisa avisar um ou mais jogadores sobre algo (ex: "Você recebeu um item!", "Evento começou!").</p>
-                            <p class="font-mono text-green-600">No script do Servidor (`Lua`): `TriggerClientEvent('nomeDoEventoNoCliente', idDoJogador, dados)`</p>
-                            <p class="font-mono text-blue-600">No script do Cliente (`Lua`): Primeiro, registre o evento: `RegisterNetEvent('nomeDoEventoNoCliente')`</p>
-                            <p class="font-mono text-blue-600">No script do Cliente (`Lua`): Depois, escute-o: `AddEventHandler('nomeDoEventoNoCliente', function(dados) ... end)`</p>
+                        <div class="mb-6 p-5 bg-green-50 rounded-lg text-gray-700 border border-green-200 shadow-sm">
+                            <p class="font-bold mb-2 text-green-700">Servidor ➡ Cliente (Server-to-Client):</p>
+                            <p class="mb-3">O servidor precisa avisar um ou mais jogadores sobre algo (ex: "Você recebeu um item!", "Evento começou!").</p>
+                            <p class="font-mono text-green-600 bg-green-100 p-2 rounded-md mb-2">No script do Servidor (Lua): `TriggerClientEvent('nomeDoEventoNoCliente', idDoJogador, dados)`</p>
+                            <p class="font-mono text-blue-600 bg-blue-100 p-2 rounded-md mb-2">No script do Cliente (Lua): Primeiro, registre o evento: `RegisterNetEvent('nomeDoEventoNoCliente')`</p>
+                            <p class="font-mono text-blue-600 bg-blue-100 p-2 rounded-md">No script do Cliente (Lua): Depois, escute-o: `AddEventHandler('nomeDoEventoNoCliente', function(dados) ... end)`</p>
                         </div>
-                        <div class="mb-4 p-4 bg-gray-100 rounded-lg text-gray-700">
-                            <p class="font-bold mb-2">Cliente ↔ NUI (`Client` ↔ Interface Web):</p>
-                            <p class="mb-2">Essa é a "ponte" entre o seu código `Lua` no computador do jogador e a telinha `HTML`/`CSS`/`JS` que ele vê. A `NUI` pode mostrar informações do jogo e também enviar cliques e dados para o `Lua` processar.</p>
-                            <div class="p-4 bg-gray-100 rounded-lg">
-                                <div class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 sm:space-x-4">
-                                    <div class="flow-item text-center p-3 bg-blue-100 rounded-lg w-full sm:w-auto" data-info="O script Lua no lado do jogador (client.lua) precisa mostrar ou atualizar algo na tela da NUI.">
-                                        <span class="font-bold">LUA (Client)</span>
+                        <div class="mb-6 p-5 bg-yellow-50 rounded-lg text-gray-700 border border-yellow-200 shadow-sm">
+                            <p class="font-bold mb-2 text-yellow-700">Cliente ↔ NUI (Client ↔ Interface Web):</p>
+                            <p class="mb-3">Essa é a "ponte" entre o seu código Lua no computador do jogador e a telinha HTML/CSS/JS que ele vê. A NUI pode mostrar informações do jogo e também enviar cliques e dados para o Lua processar.</p>
+                            <div class="p-4 bg-white rounded-lg border border-gray-200 shadow-inner">
+                                <div class="flex flex-col sm:flex-row justify-between items-center space-y-6 sm:space-y-0 sm:space-x-8">
+                                    <div class="flow-item text-center p-4 bg-blue-200 rounded-xl w-full sm:w-auto shadow-md" data-info="O script Lua no lado do jogador (client.lua) precisa mostrar ou atualizar algo na tela da NUI.">
+                                        <span class="font-bold text-blue-800">LUA (Client)</span>
                                     </div>
-                                    <div class="flex flex-col items-center">
-                                        <span class="flow-arrow text-blue-500 font-mono text-sm" data-info="Usa a função SendNUIMessage({ 'ação': 'mostrar', 'dados': 'info' }) para enviar uma mensagem para o JavaScript da NUI.">→ SendNUIMessage →</span>
-                                        <span class="flow-arrow text-green-500 font-mono text-sm" data-info="O JavaScript da NUI (script.js) usa fetch() para enviar dados para um 'callback' registrado no client.lua.">← Callback (fetch) ←</span>
+                                    <div class="flex flex-col items-center flex-shrink-0">
+                                        <span class="flow-arrow text-blue-600 font-mono text-lg transition-transform duration-300" data-info="Usa a função SendNUIMessage({ 'ação': 'mostrar', 'dados': 'info' }) para enviar uma mensagem para o JavaScript da NUI.">→ SendNUIMessage →</span>
+                                        <span class="flow-arrow text-green-600 font-mono text-lg transition-transform duration-300" data-info="O JavaScript da NUI (script.js) usa fetch() para enviar dados para um 'callback' registrado no client.lua.">← Callback (fetch) ←</span>
                                     </div>
-                                    <div class="flow-item text-center p-3 bg-green-100 rounded-lg w-full sm:w-auto" data-info="A interface web (HTML/CSS/JS) recebe a mensagem do Lua e pode também enviar dados de volta.">
-                                        <span class="font-bold">NUI (HTML/JS)</span>
+                                    <div class="flow-item text-center p-4 bg-green-200 rounded-xl w-full sm:w-auto shadow-md" data-info="A interface web (HTML/CSS/JS) recebe a mensagem do Lua e pode também enviar dados de volta.">
+                                        <span class="font-bold text-green-800">NUI (HTML/JS)</span>
                                     </div>
                                 </div>
-                                <div id="flow-info-box" class="mt-4 p-3 bg-white rounded text-center text-sm text-gray-600 min-h-[40px] flex items-center justify-center">Passe o mouse sobre um elemento do fluxo para saber mais!</div>
+                                <div id="flow-info-box" class="mt-6 p-4 bg-white rounded-xl text-center text-base text-gray-600 min-h-[70px] flex items-center justify-center shadow-inner border border-gray-100">Passe o mouse sobre um elemento do fluxo para saber mais!</div>
                             </div>
-                            <p class="text-sm mt-2">Ex: `NUI` exibe o dinheiro do jogador (`Lua` para `JS`). O jogador clica em um botão na `NUI` (`JS` para `Lua`).</p>
+                            <p class="text-sm mt-4 text-gray-600">Ex: NUI exibe o dinheiro do jogador (Lua para JS). O jogador clica em um botão na NUI (JS para Lua).</p>
                         </div>
-                        <p class="mb-4">Entender essas "conversas" é o segredo para criar scripts dinâmicos e que funcionam bem em seu servidor FiveM!</p>
+                        <p class="mb-4 text-gray-600">Entender essas "conversas" é o segredo para criar scripts dinâmicos e que funcionam bem em seu servidor FiveM!</p>
                     </article>
                 </section>
 
                 <section id="s3" class="mb-16 scroll-mt-24">
-                    <h2 class="text-3xl font-bold border-b border-gray-300 pb-2 mb-4">3. Preparando o Ambiente: Sua Bancada de Trabalho</h2>
-                    <p class="text-lg text-gray-600 mb-6">Para começar a desenvolver, precisamos montar seu ambiente de trabalho. É como organizar sua mesa antes de começar um grande projeto! Vamos instalar o `FXServer`, configurar o `QBcore` e criar a estrutura de pastas do seu primeiro recurso `NUI`.</p>
+                    <h2 class="text-4xl font-extrabold border-b border-blue-200 pb-4 mb-8 text-blue-800">3. Preparando o Ambiente: Sua Bancada de Trabalho</h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-8">Para começar a desenvolver, precisamos montar seu ambiente de trabalho. É como organizar sua mesa antes de começar um grande projeto! Vamos instalar o FXServer, configurar o QBcore e criar a estrutura de pastas do seu primeiro recurso NUI.</p>
                      
-                    <article id="s3_1" class="mb-8 p-6 bg-white rounded-lg shadow-sm scroll-mt-24">
-                        <h3 class="text-2xl font-semibold mb-3">3.1 Instalação do FXServer: O Coração do seu Servidor</h3>
-                        <p class="mb-4">O `FXServer` é o programa que faz o seu servidor FiveM funcionar. Siga estes passos simples para ter o seu no ar:</p>
+                    <article id="s3_1" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">3.1 Instalação do FXServer: O Coração do seu Servidor</h3>
+                        <p class="mb-4 text-gray-600">O FXServer é o programa que faz o seu servidor FiveM funcionar. Siga estes passos simples para ter o seu no ar:</p>
                         <ol class="list-decimal list-inside space-y-3 text-gray-700">
-                            <li><strong>Baixe os Arquivos do FiveM:</strong> Vá ao site oficial de arquivos do FiveM: <a href="https://artifacts.fivem.net/" target="_blank" class="text-blue-600 hover:underline">https://artifacts.fivem.net/</a>. Baixe a versão mais nova (geralmente a mais estável) para o seu computador (`Windows` ou `Linux`).</li>
-                            <li><strong>Crie uma Pasta:</strong> Crie uma pasta vazia em um lugar que você vai lembrar, tipo `C:\MeuServidorFiveM` (no `Windows`) ou `~/meuserver/` (no `Linux`). Essa pasta será o lar do seu servidor.</li>
-                            <li><strong>Coloque os Arquivos Lá:</strong> Descompacte o arquivo `ZIP` que você baixou (os "artefatos") direto dentro dessa nova pasta que você criou. Você vai ver um arquivo como `FXServer.exe` lá.</li>
-                            <li><strong>Pegue sua Chave Secreta (`License Key`):</strong> Vá no site `Keymaster` do FiveM: <a href="https://keymaster.fivem.net/" target="_blank" class="text-blue-600 hover:underline">https://keymaster.fivem.net/</a>. Faça login com sua conta do FiveM e clique para gerar uma nova chave. **Essa chave é super importante para seu servidor funcionar!** Copie ela, vamos usar no próximo passo.</li>
+                            <li><strong>Baixe os Arquivos do FiveM:</strong> Vá ao site oficial de arquivos do FiveM: <a href="https://artifacts.fivem.net/" target="_blank" class="text-blue-600 hover:underline">https://artifacts.fivem.net/</a>. Baixe a versão mais nova (geralmente a mais estável) para o seu computador (Windows ou Linux).</li>
+                            <li><strong>Crie uma Pasta:</strong> Crie uma pasta vazia em um lugar que você vai lembrar, tipo `C:\MeuServidorFiveM` (no Windows) ou `~/meuserver/` (no Linux). Essa pasta será o lar do seu servidor.</li>
+                            <li><strong>Coloque os Arquivos Lá:</strong> Descompacte o arquivo ZIP que você baixou (os "artefatos") direto dentro dessa nova pasta que você criou. Você vai ver um arquivo como `FXServer.exe` lá.</li>
+                            <li><strong>Pegue sua Chave Secreta (License Key):</strong> Vá no site Keymaster do FiveM: <a href="https://keymaster.fivem.net/" target="_blank" class="text-blue-600 hover:underline">https://keymaster.fivem.net/</a>. Faça login com sua conta do FiveM e clique para gerar uma nova chave. **Essa chave é super importante para seu servidor funcionar!** Copie ela, vamos usar no próximo passo.</li>
                             <li><strong>Crie o Arquivo de Configuração (`server.cfg`):</strong> Dentro da pasta do seu servidor (onde está o `FXServer.exe`), crie um novo arquivo de texto e salve-o com o nome exato: `server.cfg`. É aqui que você vai dizer ao servidor o que ele deve fazer.</li>
-                            <li><strong>Preencha o `server.cfg` Básico:</strong> Copie e cole o código abaixo no seu arquivo `server.cfg`. **Não se esqueça de trocar `"sua_chave_aqui"` pela chave que você copiou do `Keymaster`!**
+                            <li><strong>Preencha o `server.cfg` Básico:</strong> Copie e cole o código abaixo no seu arquivo `server.cfg`. **Não se esqueça de trocar `"sua_chave_aqui"` pela chave que você copiou do Keymaster!**
 <div class="code-block mt-4">
     <pre><code class="language-lua">-- Define as portas que o servidor vai usar para se comunicar
 endpoint_add_tcp "0.0.0.0:30120"
@@ -237,45 +405,43 @@ ensure spawnmanager -- Gerencia onde os jogadores nascem
                                 </div>
                             </div>
 </div>
-                                <p class="mt-2 text-sm">
+                                <p class="mt-2 text-sm text-gray-600">
                                     <strong>Explicação linha a linha do `server.cfg`:</strong><br>
-                                    <ul class="list-disc list-inside ml-4">
-                                        <li>`endpoint_add_tcp "0.0.0.0:30120"`: Diz ao servidor para abrir a porta `30120` para conexões `TCP`. É a porta padrão para jogos.</li>
-                                        <li>`endpoint_add_udp "0.0.0.0:30120"`: Faz o mesmo, mas para conexões `UDP`, também comum em jogos.</li>
-                                        <li>`sv_maxclients 48`: Define que seu servidor pode ter no máximo 48 jogadores ao mesmo tempo. Você pode mudar esse número.</li>
-                                        <li>`sets tags "curso, fivem, iniciante"`: Adiciona "etiquetas" ao seu servidor. Se você publicar, elas ajudam as pessoas a encontrá-lo.</li>
-                                        <li>`sv_scriptHookAllowed 0`: Garante que scripts externos não autorizados (muitas vezes usados para trapaças) não possam ser carregados. Mantenha isso como `0`.</li>
-                                        <li>`sv_licenseKey "sua_chave_aqui"`: **Aqui vai a sua chave de licença única.** Sem ela, o servidor não inicia!</li>
-                                        <li>`ensure mapmanager`, `ensure chat`, `ensure spawnmanager`: Esses comandos dizem ao servidor para "`ensure`" (garantir) que esses recursos básicos do FiveM sejam carregados. Eles são essenciais para um jogo funcional.</li>
-                                    </ul>
+                                    - `endpoint_add_tcp "0.0.0.0:30120"`: Diz ao servidor para abrir a porta `30120` para conexões TCP. É a porta padrão para jogos.
+                                    - `endpoint_add_udp "0.0.0.0:30120"`: Faz o mesmo, mas para conexões UDP, também comum em jogos.
+                                    - `sv_maxclients 48`: Define que seu servidor pode ter no máximo 48 jogadores ao mesmo tempo. Você pode mudar esse número.
+                                    - `sets tags "curso, fivem, iniciante"`: Adiciona "etiquetas" ao seu servidor. Se você publicar, elas ajudam as pessoas a encontrá-lo.
+                                    - `sv_scriptHookAllowed 0`: Garante que scripts externos não autorizados (muitas vezes usados para trapaças) não possam ser carregados. Mantenha isso como `0`.
+                                    - `sv_licenseKey "sua_chave_aqui"`: **Aqui vai a sua chave de licença única.** Sem ela, o servidor não inicia!
+                                    - `ensure mapmanager`, `ensure chat`, `ensure spawnmanager`: Esses comandos dizem ao servidor para "garantir" que esses recursos básicos do FiveM sejam carregados. Eles são essenciais para um jogo funcional.
                                 </p>
                             </li>
                             <li><strong>Ligue o FXServer:</strong>
                                 <ul class="list-disc list-inside mt-2 text-gray-700 text-sm">
-                                    <li><strong>No Windows:</strong> Abra o "Prompt de Comando" (`CMD`) ou `PowerShell`. Use o comando `cd` para ir até a pasta do seu servidor (ex: `cd C:\MeuServidorFiveM`). Depois, digite `FXServer.exe` e aperte `Enter`.</li>
-                                    <li><strong>No Linux:</strong> Abra um terminal. Navegue até a pasta do seu servidor (ex: `cd ~/meuserver/`). Depois, digite `./run.sh` e aperte `Enter`.</li>
+                                    <li><strong>No Windows:</strong> Abra o "Prompt de Comando" (CMD) ou "PowerShell". Use o comando `cd` para ir até a pasta do seu servidor (ex: `cd C:\MeuServidorFiveM`). Depois, digite `FXServer.exe` e aperte Enter.</li>
+                                    <li><strong>No Linux:</strong> Abra um terminal. Navegue até a pasta do seu servidor (ex: `cd ~/meuserver/`). Depois, digite `./run.sh` e aperte Enter.</li>
                                 </ul>
-                                <p class="mt-2">Se tudo deu certo, você vai ver um monte de texto no console do servidor. Isso significa que ele está online e pronto para receber jogadores! Deixe essa janela aberta enquanto estiver desenvolvendo.</p>
+                                <p class="mt-2 text-gray-600">Se tudo deu certo, você vai ver um monte de texto no console do servidor. Isso significa que ele está online e pronto para receber jogadores! Deixe essa janela aberta enquanto estiver desenvolvendo.</p>
                             </li>
                         </ol>
                     </article>
 
-                    <article id="s3_2" class="mb-8 p-6 bg-white rounded-lg shadow-sm scroll-mt-24">
-                        <h3 class="text-2xl font-semibold mb-3">3.2 Configuração do QBcore: Seu Kit de Ferramentas Extra</h3>
-                        <p class="mb-4">O `QBcore` é um "kit de ferramentas" (`framework`) que já vem com vários sistemas prontos para servidores de Roleplay. Usá-lo nos poupa muito tempo e nos permite focar na integração `NUI`. Veja como adicioná-lo ao seu servidor:</p>
+                    <article id="s3_2" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">3.2 Configuração do QBcore: Seu Kit de Ferramentas Extra</h3>
+                        <p class="mb-4 text-gray-600">O QBcore é um "kit de ferramentas" (framework) que já vem com vários sistemas prontos para servidores de Roleplay. Usá-lo nos poupa muito tempo e nos permite focar na integração NUI. Veja como adicioná-lo ao seu servidor:</p>
                         <ol class="list-decimal list-inside space-y-3 text-gray-700">
-                            <li><strong>Baixe o QBcore:</strong> O `QBcore` não é um arquivo só, mas um conjunto de vários recursos. Você pode encontrar o site oficial ou o repositório no `GitHub` procurando por "`qb-core framework FiveM`". Baixe os arquivos (geralmente em `ZIP`) do `qb-core` principal e dos recursos básicos dele (tipo `qb-spawn`, `qb-inventory`).</li>
-                            <li><strong>Organize na Pasta `resources`:</strong> Dentro da pasta `resources` do seu `FXServer`, é uma ótima ideia criar uma subpasta para frameworks, como `[qb]`. Descompacte todos os recursos do `QBcore` que você baixou dentro dessa nova pasta.
-                                <p class="font-mono bg-gray-100 p-2 rounded-md mt-2 text-sm">
+                            <li><strong>Baixe o QBcore:</strong> O QBcore não é um arquivo só, mas um conjunto de vários recursos. Você pode encontrar o site oficial ou o repositório no GitHub procurando por "qb-core framework FiveM". Baixe os arquivos (geralmente em ZIP) do `qb-core` principal e dos recursos básicos dele (tipo `qb-spawn`, `qb-inventory`).</li>
+                            <li><strong>Organize na Pasta `resources`:</strong> Dentro da pasta `resources` do seu FXServer, é uma ótima ideia criar uma subpasta para frameworks, como `[qb]`. Descompacte todos os recursos do QBcore que você baixou dentro dessa nova pasta.
+                                <p class="font-mono bg-gray-100 p-2 rounded-md mt-2 text-sm text-gray-800 shadow-inner">
                                     FXServer/<br>
                                     └── resources/<br>
                                     &nbsp;&nbsp;&nbsp;&nbsp;└── [qb]/<br>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── qb-core/<br>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── qb-inventory/<br>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── ... (outros recursos do `QBcore` aqui)
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── ... (outros recursos do QBcore aqui)
                                 </p>
                             </li>
-                            <li><strong>Diga ao `server.cfg` para Ligar o QBcore:</strong> Agora, precisamos avisar ao seu servidor para carregar esses novos recursos. Abra seu arquivo `server.cfg` novamente e adicione as linhas `ensure` para cada recurso do `QBcore`. **A ordem é importante:** o `qb-core` deve ser carregado antes de outros recursos que dependem dele.
+                            <li><strong>Diga ao `server.cfg` para Ligar o QBcore:</strong> Agora, precisamos avisar ao seu servidor para carregar esses novos recursos. Abra seu arquivo `server.cfg` novamente e adicione as linhas `ensure` para cada recurso do QBcore. **A ordem é importante:** o `qb-core` deve ser carregado antes de outros recursos que dependem dele.
 <div class="code-block mt-4">
     <pre><code class="language-lua">-- Continuação do seu server.cfg
 
@@ -304,74 +470,72 @@ ensure qb-clothes    -- Sistema de roupas
                                 </div>
                             </div>
 </div>
-                                <p class="mt-2 text-sm">
+                                <p class="mt-2 text-sm text-gray-600">
                                     <strong>Explicação das linhas `ensure qb-...`:</strong><br>
-                                    <ul class="list-disc list-inside ml-4">
-                                        <li>Cada linha `ensure` diz ao servidor para carregar um recurso.</li>
-                                        <li>`qb-core` é o principal; `qb-spawn`, `qb-inventory`, etc., são módulos que adicionam funcionalidades específicas ao `QBcore`.</li>
-                                        <li>A ordem importa! Pense como um lego: você precisa da base antes de colocar as peças em cima.</li>
-                                    </ul>
+                                    - Cada linha `ensure` diz ao servidor para carregar um recurso.
+                                    - `qb-core` é o principal; `qb-spawn`, `qb-inventory`, etc., são módulos que adicionam funcionalidades específicas ao QBcore.
+                                    - A ordem importa! Pense como um lego: você precisa da base antes de colocar as peças em cima.
                                 </p>
                             </li>
-                            <li><strong>Inicie ou Reinicie seu Servidor:</strong> Salve o `server.cfg` e reinicie seu `FXServer`. Se tudo estiver certo, você verá mensagens no console sobre o `QBcore` sendo carregado. Prontinho, seu servidor está turbinado com o `QBcore`!</li>
+                            <li><strong>Inicie ou Reinicie seu Servidor:</strong> Salve o `server.cfg` e reinicie seu FXServer. Se tudo estiver certo, você verá mensagens no console sobre o QBcore sendo carregado. Prontinho, seu servidor está turbinado com o QBcore!</li>
                         </ol>
-                        <p class="mt-4">Agora seu ambiente está pronto! O `FXServer` está online e o `QBcore` está instalado para nos ajudar a criar coisas incríveis.</p>
+                        <p class="mt-4 text-gray-600">Agora seu ambiente está pronto! O FXServer está online e o QBcore está instalado para nos ajudar a criar coisas incríveis.</p>
                     </article>
 
-                    <article id="s3_3" class="mb-8 p-6 bg-white rounded-lg shadow-sm scroll-mt-24">
-                        <h3 class="text-2xl font-semibold mb-3">3.3 Estrutura de Pastas e Arquivos do Seu Recurso NUI: Mantenha a Casa Arrumada!</h3>
-                        <p class="mb-4">Uma boa organização é como ter gavetas etiquetadas: você sempre sabe onde encontrar o que precisa! Para um recurso que usa `NUI` (nossa interface web), a estrutura de pastas é bem específica. Veja como ela deve ser:</p>
-                        <div class="bg-gray-800 text-white p-4 rounded-lg font-mono text-sm">
+                    <article id="s3_3" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">3.3 Estrutura de Pastas e Arquivos do Seu Recurso NUI: Mantenha a Casa Arrumada!</h3>
+                        <p class="mb-4 text-gray-600">Uma boa organização é como ter gavetas etiquetadas: você sempre sabe onde encontrar o que precisa! Para um recurso que usa NUI (nossa interface web), a estrutura de pastas é bem específica. Veja como ela deve ser:</p>
+                        <div class="bg-gray-800 text-white p-6 rounded-xl font-mono text-base shadow-lg">
                             <div class="flex items-center">
-                                <span class="mr-2">📁</span><span>meu_primeiro_recurso/</span>
+                                <span class="mr-2 text-yellow-300">📁</span><span>meu_primeiro_recurso/</span>
                             </div>
-                            <div class="pl-6 border-l-2 border-gray-700 ml-2">
+                            <div class="pl-8 border-l-2 border-gray-700 ml-4 mt-2">
                                 <div class="flex items-center mt-2">
-                                    <span class="mr-2">📄</span><span class="text-yellow-400">fxmanifest.lua</span> <span class="text-gray-400">// O "manual de instruções" do seu recurso</span>
+                                    <span class="mr-2 text-yellow-300">📄</span><span class="text-yellow-400">fxmanifest.lua</span> <span class="text-gray-400 ml-2">// O "manual de instruções" do seu recurso</span>
                                 </div>
                                 <div class="flex items-center mt-2">
-                                    <span class="mr-2">📄</span><span class="text-blue-400">client.lua</span> <span class="text-gray-400">// O que roda no computador de CADA jogador</span>
+                                    <span class="mr-2 text-yellow-300">📄</span><span class="text-blue-400">client.lua</span> <span class="text-gray-400 ml-2">// O que roda no computador de CADA jogador</span>
                                 </div>
                                 <div class="flex items-center mt-2">
-                                    <span class="mr-2">📄</span><span class="text-green-400">server.lua</span> <span class="text-gray-400">// O que roda SOMENTE no computador do servidor</span>
+                                    <span class="mr-2 text-yellow-300">📄</span><span class="text-green-400">server.lua</span> <span class="text-gray-400 ml-2">// O que roda SOMENTE no computador do servidor</span>
                                 </div>
                                 <div class="flex items-center mt-2">
-                                    <span class="mr-2">📁</span><span>html/</span> <span class="text-gray-400">// Sua "miniatura de site" aqui dentro!</span>
+                                    <span class="mr-2 text-yellow-300">📁</span><span>html/</span> <span class="text-gray-400 ml-2">// Sua "miniatura de site" aqui dentro!</span>
                                 </div>
-                                <div class="pl-6 border-l-2 border-gray-700 ml-2">
+                                <div class="pl-8 border-l-2 border-gray-700 ml-4 mt-2">
                                     <div class="flex items-center mt-2">
-                                        <span class="mr-2">📄</span><span class="text-red-400">index.html</span> <span class="text-gray-400">// A estrutura (esqueleto) da sua tela NUI</span>
+                                        <span class="mr-2 text-yellow-300">📄</span><span class="text-red-400">index.html</span> <span class="text-gray-400 ml-2">// A estrutura (esqueleto) da sua tela NUI</span>
                                     </div>
                                     <div class="flex items-center mt-2">
-                                        <span class="mr-2">📄</span><span class="text-purple-400">style.css</span> <span class="text-gray-400">// A "roupa" (estilo) da sua tela NUI</span>
+                                        <span class="mr-2 text-yellow-300">📄</span><span class="text-purple-400">style.css</span> <span class="text-gray-400 ml-2">// A "roupa" (estilo) da sua tela NUI</span>
                                     </div>
                                     <div class="flex items-center mt-2">
-                                        <span class="mr-2">📄</span><span class="text-yellow-300">script.js</span> <span class="text-gray-400">// A "inteligência" (interação) da sua tela NUI</span>
+                                        <span class="mr-2 text-yellow-300">📄</span><span class="text-yellow-300">script.js</span> <span class="text-gray-400 ml-2">// A "inteligência" (interação) da sua tela NUI</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <p class="mt-4">Cada um desses arquivos tem um papel vital e específico:</p>
+                        <p class="mt-6 text-gray-600">Cada um desses arquivos tem um papel vital e específico:</p>
                         <ul class="list-disc list-inside space-y-2 text-gray-700 mt-4">
-                            <li><strong>`fxmanifest.lua` (O Manual):</strong> Ele é o primeiro a ser lido pelo FiveM. Diz quais arquivos (`Lua`, `HTML`, `CSS`, `JS`) seu recurso usa e se eles são para o `cliente` ou `servidor`. Sem ele, o FiveM não sabe que seu recurso existe!</li>
-                            <li><strong>`client.lua` (O Ajudante Individual):</strong> Este script roda no computador de **cada jogador**. Ele lida com o que o jogador vê e faz, como mostrar/esconder a `NUI`, verificar se o jogador apertou uma tecla, e é a ponte principal entre a `NUI` e o `servidor`.</li>
+                            <li><strong>`fxmanifest.lua` (O Manual):</strong> Ele é o primeiro a ser lido pelo FiveM. Diz quais arquivos (Lua, HTML, CSS, JS) seu recurso usa e se eles são para o cliente ou servidor. Sem ele, o FiveM não sabe que seu recurso existe!</li>
+                            <li><strong>`client.lua` (O Ajudante Individual):</strong> Este script roda no computador de **cada jogador**. Ele lida com o que o jogador vê e faz, como mostrar/esconder a NUI, verificar se o jogador apertou uma tecla, e é a ponte principal entre a NUI e o servidor.</li>
                             <li><strong>`server.lua` (O Gerente Central):</strong> Este script roda **apenas uma vez** no computador do servidor. Ele é responsável por coisas que afetam todos os jogadores (como economias, inventários globais), e por operações que precisam ser super seguras, tipo mexer no banco de dados.</li>
-                            <li><strong>`html/` (A Caixa de Ferramentas Visuais):</strong> Esta é uma pasta especial. Tudo o que sua interface `NUI` precisa (o `HTML`, `CSS`, `JavaScript`, talvez imagens e fontes) deve estar aqui dentro. O FiveM "`serve`" esses arquivos para o jogador quando a `NUI` é ativada.</li>
-                            <li><strong>`index.html` (A Estrutura da Tela):</strong> É a página `HTML` que você vai ver. Ela define os "blocos" da sua interface: botões, textos, caixas. É o esqueleto.</li>
-                            <li><strong>`style.css` (A Beleza da Tela):</strong> Este arquivo `CSS` dá o "estilo" ao seu `index.html`. Ele define as cores, fontes, tamanhos, e como as coisas ficam organizadas na tela. É a "roupa" da sua interface!</li>
-                            <li><strong>`script.js` (A Inteligência da Tela):</strong> Este é o `JavaScript` da sua `NUI`. Ele faz a interface ser interativa: quando você clica em um botão, o `script.js` é quem reage e pode enviar uma mensagem para o `client.lua`. Ele também recebe mensagens do `client.lua` para atualizar a tela.</li>
+                            <li><strong>`html/` (A Caixa de Ferramentas Visuais):</strong> Esta é uma pasta especial. Tudo o que sua interface NUI precisa (o HTML, CSS, JavaScript, talvez imagens e fontes) deve estar aqui dentro. O FiveM "serve" esses arquivos para o jogador quando a NUI é ativada.</li>
+                            <li><strong>`index.html` (A Estrutura da Tela):</strong> É a página HTML que você vai ver. Ela define os "blocos" da sua interface: botões, textos, caixas. É o esqueleto.</li>
+                            <li><strong>`style.css` (A Beleza da Tela):</strong> Este arquivo CSS dá o "estilo" ao seu `index.html`. Ele define as cores, fontes, tamanhos, e como as coisas ficam organizadas na tela. É a "roupa" da sua interface!</li>
+                            <li><strong>`script.js` (A Inteligência da Tela):</strong> Este é o JavaScript da sua NUI. Ele faz a interface ser interativa: quando você clica em um botão, o `script.js` é quem reage e pode enviar uma mensagem para o `client.lua`. Ele também recebe mensagens do `client.lua` para atualizar a tela.</li>
                         </ul>
-                        <p class="mt-4">Seguindo essa organização, seu projeto será fácil de entender, mesmo para um iniciante, e muito mais simples de expandir no futuro!</p>
+                        <p class="mt-4 text-gray-600">Seguindo essa organização, seu projeto será fácil de entender, mesmo para um iniciante, e muito mais simples de expandir no futuro!</p>
                     </article>
                 </section>
 
                 <section id="s4" class="mb-16 scroll-mt-24">
-                    <h2 class="text-3xl font-bold border-b border-gray-300 pb-2 mb-4">4. Criando o Back-end em Lua: O Cérebro do seu Script</h2>
-                    <p class="text-lg text-gray-600 mb-6">O "back-end" é a parte da lógica que faz seu script funcionar. No FiveM, isso é escrito em `Lua`. Vamos criar os arquivos que formam essa parte do seu recurso, focando no essencial para sua primeira integração!</p>
+                    <h2 class="text-4xl font-extrabold border-b border-blue-200 pb-4 mb-8 text-blue-800">4. Criando o Back-end em Lua: O Cérebro do seu Script</h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-8">O "back-end" é a parte da lógica que faz seu script funcionar. No FiveM, isso é escrito em Lua. Vamos criar os arquivos que formam essa parte do seu recurso, focando no essencial para sua primeira integração!</p>
                     
-                    <article id="s4_1" class="mb-8 p-6 bg-white rounded-lg shadow-sm scroll-mt-24">
-                        <h3 class="text-2xl font-semibold mb-3">4.1 O Arquivo `fxmanifest.lua`: Apresentando Seu Recurso ao FiveM</h3>
-                        <p class="mb-4">Lembra do "manual de instruções"? É ele! O `fxmanifest.lua` é o primeiro arquivo que o FiveM lê quando carrega seu recurso. Ele diz ao servidor o que existe na sua pasta e como ele deve carregar tudo.</p>
+                    <article id="s4_1" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">4.1 O Arquivo `fxmanifest.lua`: Apresentando Seu Recurso ao FiveM</h3>
+                        <p class="mb-4 text-gray-600">Lembra do "manual de instruções"? É ele! O `fxmanifest.lua` é o primeiro arquivo que o FiveM lê quando carrega seu recurso. Ele diz ao servidor o que existe na sua pasta e como ele deve carregar tudo.</p>
                         <div class="code-block">
                             <pre><code class="language-lua">-- Define a versão do manifesto. 'cerulean' é a versão mais atual.
 fx_version 'cerulean'
@@ -409,22 +573,20 @@ files {
                                 </div>
                             </div>
                         </div>
-                        <p class="mt-4">
+                        <p class="mt-4 text-gray-600">
                             <strong>Explicação linha a linha do `fxmanifest.lua`:</strong><br>
-                            <ul class="list-disc list-inside ml-4">
-                                <li>`fx_version 'cerulean'` e `games { 'gta5' }`: São como cabeçalhos que informam a versão do manifesto e para qual jogo o recurso é. É padrão.</li>
-                                <li>`author`, `description`, `version`: Campos para você descrever seu script.</li>
-                                <li>`client_script 'client.lua'`: Diz ao FiveM: "Ei, carrega o arquivo `client.lua` no computador de cada jogador!". É onde a lógica que interage com a `NUI` vai morar.</li>
-                                <li>`server_script 'server.lua'`: Diz ao FiveM: "Carrega o arquivo `server.lua` apenas uma vez no computador do servidor!". É onde a lógica segura e geral vai morar.</li>
-                                <li>`ui_page 'html/index.html'`: **Essa linha é a chave para a `NUI`!** Ela diz ao FiveM que sua interface web principal está no arquivo `index.html` dentro da pasta `html`.</li>
-                                <li>`files { ... }`: Esta é uma lista super importante! Você deve listar **todos os arquivos (`HTML`, `CSS`, `JavaScript`, imagens, fontes, etc.)** que estão dentro da sua pasta `html/` e que a sua interface `NUI` vai usar. Se você esquecer um arquivo aqui, a `NUI` não vai conseguir encontrá-lo e dará erro!</li>
-                            </ul>
+                            - `fx_version 'cerulean'` e `games { 'gta5' }`: São como cabeçalhos que informam a versão do manifesto e para qual jogo o recurso é. É padrão.
+                            - `author`, `description`, `version`: Campos para você descrever seu script.
+                            - `client_script 'client.lua'`: Diz ao FiveM: "Ei, carrega o arquivo `client.lua` no computador de cada jogador!". É onde a lógica que interage com a NUI vai morar.
+                            - `server_script 'server.lua'`: Diz ao FiveM: "Carrega o arquivo `server.lua` apenas uma vez no computador do servidor!". É onde a lógica segura e geral vai morar.
+                            - `ui_page 'html/index.html'`: **Essa linha é a chave para a NUI!** Ela diz ao FiveM que sua interface web principal está no arquivo `index.html` dentro da pasta `html`.
+                            - `files { ... }`: Esta é uma lista super importante! Você deve listar **todos os arquivos (HTML, CSS, JavaScript, imagens, fontes, etc.)** que estão dentro da sua pasta `html/` e que a sua interface NUI vai usar. Se você esquecer um arquivo aqui, a NUI não vai conseguir encontrá-lo e dará erro!
                         </p>
                     </article>
 
-                    <article id="s4_2" class="mb-8 p-6 bg-white rounded-lg shadow-sm scroll-mt-24">
-                        <h3 class="text-2xl font-semibold mb-3">4.2 Scripts do Lado do Cliente (`client.lua`): O Ajudante do Jogador</h3>
-                        <p class="mb-4">O `client.lua` roda no computador de cada jogador. É o seu elo de ligação entre o jogo, a `NUI` e, indiretamente, o `servidor`. Ele vai cuidar de mostrar/esconder a interface e de enviar/receber mensagens dela.</p>
+                    <article id="s4_2" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">4.2 Scripts do Lado do Cliente (`client.lua`): O Ajudante do Jogador</h3>
+                        <p class="mb-4 text-gray-600">O `client.lua` roda no computador de cada jogador. É o seu elo de ligação entre o jogo, a NUI e, indiretamente, o servidor. Ele vai cuidar de mostrar/esconder a interface e de enviar/receber mensagens dela.</p>
                         <div class="code-block">
                             <pre><code class="language-lua">-- Uma variável simples para saber se a NUI está aberta ou fechada.
 local NUIAberta = false
@@ -495,60 +657,36 @@ end)
                                 </div>
                             </div>
                         </div>
-                        <p class="mt-4">
+                        <p class="mt-4 text-gray-600">
                             <strong>Explicação linha a linha do `client.lua`:</strong><br>
-                            <ul class="list-disc list-inside ml-4">
-                                <li>`local NUIAberta = false`: Uma pequena "bandeira" que guardamos para saber se a sua tela `NUI` está visível ou não. Começa como `false` (fechada).</li>
-                                <li>`function MostrarNUI()`: Essa função é o que você chama quando quer que sua tela `NUI` apareça.
-                                    <ul class="list-circle list-inside ml-6">
-                                        <li>`NUIAberta = true`: Liga nossa "bandeira" para `true`.</li>
-                                        <li>`SetNuiFocus(true, true)`: Uma função especial do FiveM. O primeiro `true` diz: "O jogador vai interagir com a `NUI` agora". O segundo `true` diz: "Mostra o mouse para ele poder clicar!".</li>
-                                        <li>`SendNUIMessage({ acao = 'mostrar' })`: Essa é a mensagem que o `Lua` envia para o `JavaScript` da sua `NUI`. `acao = 'mostrar'` é um recado para a `NUI` saber o que fazer.</li>
-                                    </ul>
-                                </li>
-                                <li>`function EsconderNUI()`: O oposto de `MostrarNUI()`. Ela esconde a `NUI`.
-                                    <ul class="list-circle list-inside ml-6">
-                                        <li>`NUIAberta = false`: Desliga nossa "bandeira".</li>
-                                        <li>`SetNuiFocus(false, false)`: Tira o foco da `NUI` e esconde o cursor, devolvendo o controle ao jogo.</li>
-                                        <li>`SendNUIMessage({ acao = 'esconder' })`: Manda um recado para a `NUI` se esconder.</li>
-                                    </ul>
-                                </li>
-                                <li>`RegisterNUICallback('cliqueDoBotao', function(dadosRecebidos, funcaoResposta) ... end)`: **Essa é a ponte do `NUI` para o `Lua`!** É uma função especial que fica "escutando" por mensagens que vêm do `JavaScript` da `NUI`.
-                                    <ul class="list-circle list-inside ml-6">
-                                        <li>`'cliqueDoBotao'`: É o nome que você dá para esse "canal de comunicação". O `JavaScript` vai usar esse nome para mandar a mensagem.</li>
-                                        <li>`dadosRecebidos`: É a informação que o `JavaScript` te enviou (tipo, qual botão foi clicado).</li>
-                                        <li>`funcaoResposta`: É uma função que você pode usar para mandar um recado de volta para o `JavaScript`.</li>
-                                        <li>`print(...)`: Serve para você ver mensagens no console do FiveM (aperte `F8` no jogo para ver). Super útil para depurar!</li>
-                                        <li>`TriggerServerEvent(...)`: (Comentado no exemplo para simplificar) É como você "passa a bola" para o `servidor`. Se o que a `NUI` fez precisa de uma ação geral ou segura (como tirar dinheiro do jogador), o `client.lua` avisa o `server.lua`.</li>
-                                    </ul>
-                                </li>
-                                <li>`RegisterNUICallback('escape', function(_, funcaoResposta) ... end)`: Um `callback` específico para quando a `NUI` quer se fechar, geralmente quando o jogador aperta `ESC`.
-                                    <ul class="list-circle list-inside ml-6">
-                                        <li>`EsconderNUI()`: Chama a função para esconder a `NUI`.</li>
-                                        <li>`funcaoResposta('ok')`: Avisa a `NUI` que deu certo.</li>
-                                    </ul>
-                                </li>
-                                <li>`RegisterCommand('abrirtela', function() ... end, false)`: Registra um comando que você pode digitar no chat do jogo (ex: `/abrirtela`).
-                                    <ul class="list-circle list-inside ml-6">
-                                        <li>`if not NUIAberta then MostrarNUI() end`: Só abre se já não estiver aberta.</li>
-                                        <li>`false`: Significa que qualquer jogador pode usar este comando. Se fosse `true`, só admins (com permissão) poderiam.</li>
-                                    </ul>
-                                </li>
-                                <li>`Citizen.CreateThread(function() ... end)`: Cria uma "tarefa" que roda o tempo todo no jogo.
-                                    <ul class="list-circle list-inside ml-6">
-                                        <li>`while true do`: Cria um loop infinito, para a tarefa nunca parar.</li>
-                                        <li>`Citizen.Wait(0)`: **MUITO IMPORTANTE:** Essa linha faz o script "`respirar`" para não travar o jogo. Ele libera a `CPU` para outras tarefas. Sem isso, seu jogo pode congelar!</li>
-                                        <li>`if NUIAberta and IsControlJustReleased(0, 322) then EsconderNUI() end`: Verifica se a `NUI` está aberta E se o jogador soltou a tecla `ESC` (código `322`). Se sim, esconde a `NUI`. O `0` é para o controle do mouse/teclado.</li>
-                                    </ul>
-                                </li>
-                            </ul>
+                            - `local NUIAberta = false`: Uma pequena "bandeira" que guardamos para saber se a sua tela NUI está visível ou não. Começa como `false` (fechada).
+                            - `function MostrarNUI()`: Essa função é o que você chama quando quer que sua tela NUI apareça.
+                                - `NUIAberta = true`: Liga nossa "bandeira" para `true`.
+                                - `SetNuiFocus(true, true)`: Uma função especial do FiveM. O primeiro `true` diz: "O jogador vai interagir com a NUI agora". O segundo `true` diz: "Mostra o mouse para ele poder clicar!".
+                                - `SendNUIMessage({ acao = 'mostrar' })`: Essa é a mensagem que o Lua envia para o JavaScript da sua NUI. `acao = 'mostrar'` é um recado para a NUI saber o que fazer.
+                            - `function EsconderNUI()`: O oposto de `MostrarNUI()`. Ela esconde a NUI.
+                                - `NUIAberta = false`: Desliga nossa "bandeira`.
+                                - `SetNuiFocus(false, false)`: Devolve o controle do mouse e do teclado para o jogo e esconde o cursor.
+                                - `SendNUIMessage({ acao = 'esconder' })`: Manda um recado para a NUI se esconder.
+                            - `RegisterNUICallback('cliqueDoBotao', function(dadosRecebidos, funcaoResposta) ... end)`: **Essa é a ponte do NUI para o Lua!** É uma função especial que fica "escutando" por mensagens que vêm do JavaScript da NUI.
+                                - `'cliqueDoBotao'`: É o nome que você dá para esse "canal de comunicação". O JavaScript vai usar esse nome para mandar a mensagem.
+                                - `dadosRecebidos`: É a informação que o JavaScript te enviou (tipo, qual botão foi clicado).
+                                - `funcaoResposta`: É uma função que você pode usar para mandar um recado de volta para o JavaScript.
+                                - `print(...)`: Serve para você ver mensagens no console do FiveM (aperte `F8` no jogo para ver). Super útil para depurar!
+                                - `TriggerServerEvent(...)`: (Comentado no exemplo para simplificar) É como você "passa a bola" para o servidor. Se o que a NUI fez precisa de uma ação geral ou segura (como tirar dinheiro do jogador), o `client.lua` avisa o `server.lua`.
+                            - `RegisterNUICallback('escape', ...)`: Um callback específico para quando a NUI quer se fechar, geralmente quando o jogador aperta ESC.
+                            - `RegisterCommand('abrirtela', function() ... end, false)`: Permite que você digite `/abrirtela` no chat do jogo para testar. O `false` no final significa que qualquer jogador pode usar. Se fosse `true`, só admins (com permissão) poderiam.
+                            - `Citizen.CreateThread(function() ... end)`: Pense nisso como uma tarefa que seu script Lua vai ficar fazendo repetidamente.
+                                - `while true do`: Cria um loop infinito, para a tarefa nunca parar.
+                                - `Citizen.Wait(0)`: **MUITO IMPORTANTE: Essa linha faz o script "respirar" para não travar o jogo.**
+                                - `IsControlJustReleased(0, 322)`: Verifica se uma tecla específica (no caso, `322` é o código para a tecla ESC) foi *acabada de ser solta*. O `0` é para o controle do mouse/teclado.
                         </p>
                     </article>
 
-                     <article id="s4_3" class="mb-8 p-6 bg-white rounded-lg shadow-sm scroll-mt-24">
-                        <h3 class="text-2xl font-semibold mb-3">4.3 Scripts do Lado do Servidor (`server.lua`): O Gerente Geral</h3>
-                        <p class="mb-4">O `server.lua` é o "cérebro central" do seu servidor. Ele roda apenas uma vez, no computador que hospeda o jogo. Sua principal responsabilidade é lidar com a lógica que afeta todos os jogadores, e com ações que precisam ser super seguras, como mexer em dinheiro, inventário ou banco de dados.</p>
-                        <p class="mb-4">Ele se comunica com os `client.lua`s de cada jogador usando "`eventos de rede`".</p>
+                     <article id="s4_3" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">4.3 Scripts do Lado do Servidor (`server.lua`): O Gerente Geral</h3>
+                        <p class="mb-4 text-gray-600">O `server.lua` é o "cérebro central" do seu servidor. Ele roda apenas uma vez, no computador que hospeda o jogo. Sua principal responsabilidade é lidar com a lógica que afeta todos os jogadores, e com ações que precisam ser super seguras, como mexer em dinheiro, inventário ou banco de dados.</p>
+                        <p class="mb-4 text-gray-600">Ele se comunica com os `client.lua`s de cada jogador usando "eventos de rede".</p>
                         <div class="code-block">
                             <pre><code class="language-lua">-- Primeiro, registramos um evento que o client.lua pode "disparar" para o servidor.
 -- Pense nisso como "abrindo um canal" para receber mensagens do cliente.
@@ -619,41 +757,33 @@ end, true) -- 'true' significa que este comando é RESTRITO (só admins por padr
                                 </div>
                             </div>
                         </div>
-                        <p class="mt-4">
+                        <p class="mt-4 text-gray-600">
                             <strong>Explicação linha a linha do `server.lua`:</strong><br>
-                            <ul class="list-disc list-inside ml-4">
-                                <li>`RegisterNetEvent('meuRecurso:fazerAlgoNoServidor')`: Essa linha "`registra`" um evento de rede. Significa que o servidor está pronto para "`ouvir`" quando um `client.lua` dispara um evento com esse nome. Pense nisso como ligar um telefone para que as ligações possam ser recebidas.</li>
-                                <li>`AddEventHandler('meuRecurso:fazerAlgoNoServidor', function(dadosQueVieramDoCliente) ... end)`: Aqui, definimos o que acontece quando o evento `meuRecurso:fazerAlgoNoServidor` é "`ouvido`".
-                                    <ul class="list-circle list-inside ml-6">
-                                        <li>`dadosQueVieramDoCliente`: São as informações que o `client.lua` enviou junto com o evento.</li>
-                                        <li>`local jogadorID = source`: `source` é uma variável mágica no `server.lua` que, em eventos recebidos do cliente, **sempre diz qual jogador** disparou o evento. Isso é crucial para saber quem está interagindo com o servidor!</li>
-                                        <li>`print(...)`: Novamente, para depurar. Você verá essas mensagens no console do seu `FXServer`.</li>
-                                        <li>`json.encode(dadosQueVieramDoCliente)`: Uma função útil para transformar uma tabela `Lua` em uma `string JSON`, o que ajuda a ver os dados de forma legível no console.</li>
-                                        <li>`if dadosQueVieramDoCliente.item == 'agua' ...`: Este é um exemplo de **validação de dados no servidor**. Mesmo que o cliente diga que quer "dar água", o servidor *sempre* verifica se é uma ação válida. **Sempre valide tudo no servidor para segurança!**</li>
-                                        <li>`TriggerClientEvent('chat:addMessage', jogadorID, { ... })`: Esta é uma forma simples de enviar uma mensagem para o chat do jogo de um jogador específico. `-1` como `id` enviaria para todos. É uma forma de dar feedback ao jogador. (O `QBCore:Notify` é uma notificação visual mais bonita do `QBcore`, mas o `chat:addMessage` é mais básico e universal).</li>
-                                    </ul>
-                                </li>
-                                <li>`RegisterCommand('avisartodos', function(source, args, rawCommand) ... end, true)`: Cria um comando que você pode digitar no chat do jogo.
-                                    <ul class="list-circle list-inside ml-6">
-                                        <li>`source == 0`: Se o `source` é `0`, significa que o comando foi digitado no console do servidor.</li>
-                                        <li>`local mensagem = table.concat(args, ' ')`: Junta todas as partes da mensagem que você digitou no chat em uma única `string`.</li>
-                                        <li>`TriggerClientEvent('chat:addMessage', -1, { ... })`: Envia uma mensagem para o chat de **TODOS** os jogadores (`-1` significa todos).</li>
-                                        <li>`true` no final de `RegisterCommand`: Torna este comando **restrito**. Por padrão, apenas administradores com permissão podem usá-lo. **É uma boa prática para comandos poderosos!**</li>
-                                    </ul>
-                                </li>
-                            </ul>
+                            - `RegisterNetEvent('meuRecurso:fazerAlgoNoServidor')`: Essa linha "registra" um evento de rede. Significa que o servidor está pronto para "ouvir" quando um `client.lua` dispara um evento com esse nome. Pense nisso como ligar um telefone para que as ligações possam ser recebidas.
+                            - `AddEventHandler('meuRecurso:fazerAlgoNoServidor', function(dadosQueVieramDoCliente) ... end)`: Aqui, definimos o que acontece quando o evento `meuRecurso:fazerAlgoNoServidor` é "ouvido".
+                                - `dadosQueVieramDoCliente`: São as informações que o `client.lua` enviou junto com o evento.
+                                - `local jogadorID = source`: `source` é uma variável mágica no `server.lua` que, em eventos recebidos do cliente, **sempre diz qual jogador** disparou o evento. Isso é crucial para saber quem está interagindo com o servidor!
+                                - `print(...)`: Novamente, para depurar. Você verá essas mensagens no console do seu FXServer.
+                                - `json.encode(dadosQueVieramDoCliente)`: Uma função útil para transformar uma tabela Lua em uma string JSON, o que ajuda a ver os dados de forma legível no console.
+                                - `if dadosQueVieramDoCliente.item == 'agua' ...`: Este é um exemplo de **validação de dados no servidor**. Mesmo que o cliente diga que quer "dar água", o servidor *sempre* verifica se é uma ação válida. **Sempre valide tudo no servidor para segurança!**
+                                - `TriggerClientEvent('chat:addMessage', jogadorID, { ... })`: Esta é uma forma simples de enviar uma mensagem para o chat do jogo de um jogador específico. `-1` como `id` enviaria para todos. É uma forma de dar feedback ao jogador. (O `QBCore:Notify` é uma notificação visual mais bonita do QBcore, mas o `chat:addMessage` é mais básico e universal).
+                            - `RegisterCommand('avisartodos', function(source, args, rawCommand) ... end, true)`: Cria um comando que você pode digitar no chat do jogo.
+                                - `source == 0`: Se o `source` é `0`, significa que o comando foi executado diretamente no console do servidor (o CMD/terminal que você deixou aberto).
+                                - `table.concat(args, ' ')`: Junta todas as palavras da mensagem que você digitou no chat em uma única string.
+                                - `TriggerClientEvent('chat:addMessage', -1, { ... })`: Envia uma mensagem para o chat de **TODOS** os jogadores (`-1` significa todos).
+                                - `true` no final de `RegisterCommand`: Torna este comando **restrito**. Por padrão, apenas administradores com permissão podem usá-lo. **É uma boa prática para comandos poderosos!**
                         </p>
-                        <p class="mt-4">O `server.lua` é o seu guardião e central de controle. Ele garante que a lógica principal funcione de forma justa e segura para todos os jogadores.</p>
+                        <p class="mt-4 text-gray-600">O `server.lua` é o seu guardião e central de controle. Ele garante que a lógica principal funcione de forma justa e segura para todos os jogadores.</p>
                     </article>
                 </section>
                 
                 <section id="s5" class="mb-16 scroll-mt-24">
-                    <h2 class="text-3xl font-bold border-b border-gray-300 pb-2 mb-4">5. Desenvolvendo a Interface NUI (Front-end): A Beleza da Sua Tela</h2>
-                    <p class="text-lg text-gray-600 mb-6">Agora que temos o "cérebro" em `Lua`, é hora de criar a "cara" do seu script! A `NUI` é onde a magia visual acontece, usando `HTML` para a estrutura, `CSS` para a beleza e `JavaScript` para a inteligência. Vamos construir sua primeira interface interativa!</p>
+                    <h2 class="text-4xl font-extrabold border-b border-blue-200 pb-4 mb-8 text-blue-800">5. Desenvolvendo a Interface NUI (Front-end): A Beleza da Sua Tela</h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-8">Agora que temos o "cérebro" em Lua, é hora de criar a "cara" do seu script! A NUI é onde a magia visual acontece, usando HTML para a estrutura, CSS para a beleza e JavaScript para a inteligência. Vamos construir sua primeira interface interativa!</p>
 
-                    <article id="s5_1" class="mb-8 p-6 bg-white rounded-lg shadow-sm scroll-mt-24">
-                        <h3 class="text-2xl font-semibold mb-3">5.1 Criando a Página HTML (`index.html`): O Esqueleto da sua Tela</h3>
-                        <p class="mb-4">O `index.html` é a página principal da sua interface `NUI`. Ele define todos os elementos que o jogador verá, como textos, botões e caixas. Pense nele como o esqueleto do seu site ou aplicativo.</p>
+                    <article id="s5_1" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">5.1 Criando a Página HTML (`index.html`): O Esqueleto da sua Tela</h3>
+                        <p class="mb-4 text-gray-600">O `index.html` é a página principal da sua interface NUI. Ele define todos os elementos que o jogador verá, como textos, botões e caixas. Pense nele como o esqueleto do seu site ou aplicativo.</p>
                          <div class="code-block">
                             <pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html lang="pt"&gt; &lt;!-- Indica que o idioma da página é Português --&gt;
@@ -666,21 +796,21 @@ end, true) -- 'true' significa que este comando é RESTRITO (só admins por padr
 &lt;body&gt;
     &lt;!-- Este é o principal "contêiner" da sua interface. Começa escondido com a classe 'nui-hidden'. --&gt;
     &lt;div id="container" class="nui-hidden"&gt; 
-        &lt;h1 class="text-2xl font-bold text-white mb-4"&gt;Bem-vindo(a)!&lt;/h1&gt;
-        &lt;p class="text-gray-300 mb-6"&gt;Clique para ver a mágica da integração!&lt;/p&gt;
+        &lt;h1 class="text-3xl font-extrabold text-white mb-4"&gt;Bem-vindo(a)!&lt;/h1&gt;
+        &lt;p class="text-gray-200 mb-6"&gt;Clique para ver a mágica da integração!&lt;/p&gt;
         
         &lt;!-- Este é o botão que vamos usar para interagir --&gt;
-        &lt;button id="btnInteragir" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"&gt;
+        &lt;button id="btnInteragir" class="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 ease-in-out"&gt;
             Interagir com o Back-end
         &lt;/button&gt;
         
         &lt;!-- Este é o botão para fechar a interface --&gt;
-        &lt;button id="btnClose" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-4"&gt;
+        &lt;button id="btnClose" class="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 ease-in-out ml-4"&gt;
             Fechar NUI
         &lt;/button&gt;
         
         &lt;!-- Esta div vai mostrar mensagens de feedback --&gt;
-        &lt;div id="mensagemFeedback" class="mt-4 text-sm text-yellow-300"&gt;&lt;/div&gt;
+        &lt;div id="mensagemFeedback" class="mt-6 text-base text-yellow-300 font-medium"&gt;&lt;/div&gt;
     &lt;/div&gt;
     
     &lt;!-- Conecta seu arquivo JavaScript. Coloque no final do body para o HTML carregar primeiro. --&gt;
@@ -697,37 +827,29 @@ end, true) -- 'true' significa que este comando é RESTRITO (só admins por padr
                                 </div>
                             </div>
                         </div>
-                        <p class="mt-4">
+                        <p class="mt-4 text-gray-600">
                             <strong>Explicação linha a linha do `index.html`:</strong><br>
-                            <ul class="list-disc list-inside ml-4">
-                                <li>`<!DOCTYPE html>`, `<html>`, `<head>`, `<body>`: São a estrutura básica de qualquer página `HTML`. Não se preocupe muito com elas por agora, são o padrão.</li>
-                                <li>`<meta charset="UTF-8">`: É importante para que todos os caracteres (como "`ç`" ou "`ã`") apareçam corretamente na sua tela.</li>
-                                <li>`<meta name="viewport" content="width=device-width, initial-scale=1.0">`: **Essa linha é fundamental para que sua `NUI` se ajuste a diferentes telas!** Sem ela, sua interface pode ficar estranha no celular ou em telas grandes.</li>
-                                <li>`<title>Minha Primeira NUI</title>`: O texto que aparece na aba do navegador quando você abre a página. Útil para organizar suas janelas de depuração.</li>
-                                <li>`<link rel="stylesheet" href="style.css">`: Essa linha "`conecta`" seu arquivo `style.css` (onde está o estilo) com esta página `HTML`.</li>
-                                <li>`<div id="container" class="nui-hidden">`: Este é o principal "`bloco`" da sua interface. Tudo o que você quer que apareça na tela vai dentro dele.
-                                    <ul class="list-circle list-inside ml-6">
-                                        <li>`id="container"`: É um "`nome`" único que damos a esse bloco. O `JavaScript` vai usar esse nome para encontrar o bloco e mostrar/esconder a interface.</li>
-                                        <li>`class="nui-hidden"`: É um "`sobrenome`" que damos a ele. Essa classe será usada pelo `CSS` para que a tela comece **escondida** e pelo `JavaScript` para alternar a visibilidade.</li>
-                                    </ul>
-                                </li>
-                                <li>`<h1>`, `<p>`: São tags `HTML` para títulos e parágrafos. Usamos algumas classes do `Tailwind CSS` (como `text-2xl`, `font-bold`, `text-white`) para dar um estilo rápido.</li>
-                                <li>`<button id="btnInteragir">`: Um botão interativo!
-                                    <ul class="list-circle list-inside ml-6">
-                                        <li>`id="btnInteragir"`: Outro "`nome`" único para o `JavaScript` saber qual botão foi clicado.</li>
-                                        <li>As classes do `Tailwind CSS` (como `bg-blue-600`, `hover:bg-blue-700`, `rounded`) servem para deixá-lo com um visual bonito e moderno.</li>
-                                    </ul>
-                                </li>
-                                <li>`<div id="mensagemFeedback">`: Uma área onde podemos mostrar mensagens para o jogador, tipo "`Sua ação foi um sucesso!`".</li>
-                                <li>`<script src="script.js"></script>`: Essa linha "`conecta`" seu arquivo `script.js` (onde está a inteligência) com esta página `HTML`. É importante que ela esteja no final do `<body>`, para garantir que todos os elementos `HTML` já existam quando o `JavaScript` tentar manipulá-los.</li>
-                            </ul>
+                            - `<!DOCTYPE html>`, `<html>`, `<head>`, `<body>`: São a estrutura básica de qualquer página HTML. Não se preocupe muito com elas por agora, são o padrão.
+                            - `<meta charset="UTF-8">`: É importante para que todos os caracteres (como "ç" ou "ã") apareçam corretamente na sua tela.
+                            - `<meta name="viewport" content="width=device-width, initial-scale=1.0">`: **Essa linha é fundamental para que sua NUI se ajuste a diferentes telas!** Sem ela, sua interface pode ficar estranha no celular ou em telas grandes.
+                            - `<title>Minha Primeira NUI</title>`: O texto que aparece na aba do navegador quando você abre a página. Útil para organizar suas janelas de depuração.
+                            - `<link rel="stylesheet" href="style.css">`: Essa linha "conecta" seu arquivo `style.css` (onde está o estilo) com esta página HTML.
+                            - `<div id="container" class="nui-hidden">`: Este é o principal "bloco" da sua interface. Tudo o que você quer que apareça na tela vai dentro dele.
+                                - `id="container"`: É um "nome" único que damos a esse bloco. O JavaScript vai usar esse nome para encontrar o bloco e mostrar/esconder a interface.
+                                - `class="nui-hidden"`: É um "sobrenome" que damos a ele. Essa classe será usada pelo CSS para que a tela comece **escondida** e pelo JavaScript para alternar a visibilidade.
+                            - `<h1>`, `<p>`: São tags HTML para títulos e parágrafos. Usamos algumas classes do Tailwind CSS (como `text-2xl`, `font-bold`, `text-white`) para dar um estilo rápido.
+                            - `<button id="btnInteragir">`: Um botão interativo!
+                                - `id="btnInteragir"`: Outro "nome" único para o JavaScript saber qual botão foi clicado.
+                                - As classes do Tailwind CSS (como `bg-blue-600`, `hover:bg-blue-700`, `rounded`) servem para deixá-lo com um visual bonito e moderno.
+                            - `<div id="mensagemFeedback">`: Uma área onde podemos mostrar mensagens para o jogador, tipo "Sua ação foi um sucesso!".
+                            - `<script src="script.js"></script>`: Essa linha "conecta" seu arquivo `script.js` (onde está a inteligência) com esta página HTML. É importante que ela esteja no final do `<body>`, para garantir que todos os elementos HTML já existam quando o JavaScript tentar manipulá-los.
                         </p>
-                        <p class="mt-4">Este `HTML` é o alicerce visual. Com ele, já podemos ver onde tudo vai ficar na tela. Agora, vamos deixar ele bonito com o `CSS`!</p>
+                        <p class="mt-4 text-gray-600">Este HTML é o alicerce visual. Com ele, já podemos ver onde tudo vai ficar na tela. Agora, vamos deixar ele bonito com o CSS!</p>
                     </article>
 
-                    <article id="s5_2" class="mb-8 p-6 bg-white rounded-lg shadow-sm scroll-mt-24">
-                        <h3 class="text-2xl font-semibold mb-3">5.2 Estilizando com CSS (`style.css`): A Roupa da Sua Tela</h3>
-                        <p class="mb-4">O `style.css` é onde você adiciona cores, fontes, tamanhos e define a organização visual da sua interface. Ele transforma o "esqueleto" `HTML` em algo bonito e funcional. É a "`roupa`" da sua `NUI`!</p>
+                    <article id="s5_2" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">5.2 Estilizando com CSS (`style.css`): A Roupa da Sua Tela</h3>
+                        <p class="mb-4 text-gray-600">O `style.css` é onde você adiciona cores, fontes, tamanhos e define a organização visual da sua interface. Ele transforma o "esqueleto" HTML em algo bonito e funcional. É a "roupa" da sua NUI!</p>
                          <div class="code-block">
                             <pre><code class="language-css">/* IMPORTANTE: Isso faz o fundo da NUI ser transparente, para você ver o jogo por trás! */
 body {
@@ -750,19 +872,19 @@ body {
 
 /* Estilo para o nosso contêiner principal (#container) */
 #container {
-    background: rgba(44, 62, 80, 0.9); /* Fundo cinza escuro semi-transparente */
-    padding: 30px; /* Espaçamento interno */
-    border-radius: 12px; /* Cantos arredondados */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* Uma sombra leve para dar profundidade */
+    background: rgba(44, 62, 80, 0.95); /* Fundo cinza escuro mais opaco */
+    padding: 40px; /* Mais espaçamento interno */
+    border-radius: 16px; /* Mais arredondado */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5); /* Sombra mais forte para profundidade */
     text-align: center; /* Alinha o texto ao centro */
-    max-width: 500px; /* Limita a largura máxima para não ficar grande demais */
+    max-width: 600px; /* Aumenta a largura máxima */
     width: 90%; /* Ocupa 90% da largura disponível, mas respeita o max-width */
-    border: 1px solid rgba(52, 73, 94, 0.7); /* Uma borda sutil */
+    border: 2px solid rgba(52, 73, 94, 0.8); /* Borda mais definida */
     
     /* Propriedades para animação de entrada e saída */
-    transform: translateY(20px); /* Começa 20px abaixo da posição final */
+    transform: translateY(30px); /* Começa 30px abaixo da posição final */
     opacity: 0; /* Começa totalmente transparente */
-    transition: transform 0.5s ease-out, opacity 0.5s ease-out; /* Anima a transição suavemente em 0.5 segundos */
+    transition: transform 0.6s ease-out, opacity 0.6s ease-out; /* Animação mais suave e lenta */
 }
 
 /* Quando a classe 'is-visible' é adicionada (pelo JS), a interface aparece com animação */
@@ -774,16 +896,18 @@ body {
 /* Estilos básicos para botões (usaremos as classes do Tailwind diretamente no HTML, mas aqui está um exemplo CSS puro) */
 button {
     cursor: pointer; /* Muda o cursor para uma mãozinha quando passa por cima */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Animação suave para hover/clique */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Animação suave para hover/clique */
     outline: none; /* Remove o contorno azul que aparece ao clicar */
 }
 
 button:hover {
-    transform: translateY(-1px); /* Levanta o botão um pouco no hover */
+    transform: translateY(-2px); /* Levanta o botão um pouco no hover */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Sombra no hover */
 }
 
 button:active {
     transform: translateY(0); /* Volta para a posição normal ao clicar */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra mais sutil no active */
 }
 </code></pre>
                             <div class="explanation-area mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-gray-700 hidden">
@@ -795,49 +919,27 @@ button:active {
                                 </div>
                             </div>
                         </div>
-                        <p class="mt-4">
+                        <p class="mt-4 text-gray-600">
                             <strong>Explicação linha a linha do `style.css`:</strong><br>
-                            <ul class="list-disc list-inside ml-4">
-                                <li>`body { ... }`: Essas regras são para o corpo da sua página `HTML`, que é o fundo.
-                                    <ul class="list-circle list-inside ml-6">
-                                        <li>`margin: 0;` e `padding: 0;`: Removem margens e preenchimentos padrões que os navegadores podem adicionar, garantindo um controle total.</li>
-                                        <li>`background-color: transparent;`: **Essa é a linha mais importante aqui!** Ela faz o fundo da sua `NUI` ficar "`invisível`", permitindo que o jogo (`GTA V`) seja visto por trás. Se você colocar uma cor aqui, ela vai cobrir a tela do jogo!</li>
-                                        <li>`font-family: 'Inter', sans-serif;` e `color: #ecf0f1;`: Definem a fonte padrão e a cor do texto para toda a interface.</li>
-                                        <li>`display: flex; justify-content: center; align-items: center; min-height: 100vh;`: Um combo mágico do `CSS Flexbox`! Ele faz com que o conteúdo dentro do `<body>` (no nosso caso, o `#container`) seja **centralizado** tanto na horizontal (`justify-content`) quanto na vertical (`align-items`) na tela do jogo. `min-height: 100vh;` garante que ele ocupe a altura total da janela.</li>
-                                        <li>`overflow: hidden;`: Garante que não apareçam barras de rolagem indesejadas se o conteúdo for maior que a tela.</li>
-                                    </ul>
-                                </li>
-                                <li>`.nui-hidden { display: none !important; }`: Esta classe é a "`chave liga/desliga`" da sua interface. Quando ela está aplicada, o elemento simplesmente desaparece da tela. O `!important` força essa regra a ter prioridade.</li>
-                                <li>`#container { ... }`: Aqui estilizamos o nosso principal bloco `div` com `id="container"`.
-                                    <ul class="list-circle list-inside ml-6">
-                                        <li>`background: rgba(44, 62, 80, 0.9);`: Um fundo escuro semi-transparente. O `0.9` é a opacidade (quão transparente é).</li>
-                                        <li>`padding`, `border-radius`, `box-shadow`, `max-width`, `width`, `border`: São propriedades para controlar o espaçamento interno, arredondar cantos, adicionar sombra, e controlar a largura de forma responsiva.</li>
-                                        <li>`transform: translateY(20px); opacity: 0; transition: ...;`: Essas linhas são para criar uma **animação suave**! A interface começa um pouco para baixo (`translateY(20px)`) e invisível (`opacity: 0`), e a `transition` diz que qualquer mudança nessas propriedades será animada em 0.5 segundos (`ease-out` faz a animação desacelerar no final).</li>
-                                    </ul>
-                                </li>
-                                <li>`#container.is-visible { ... }`: Quando o `JavaScript` adiciona a classe `is-visible` ao `#container`, essas regras são aplicadas:
-                                    <ul class="list-circle list-inside ml-6">
-                                        <li>`transform: translateY(0);`: Volta para a posição normal (o elemento "sobe" para o lugar certo).</li>
-                                        <li>`opacity: 1;`: Fica totalmente visível.</li>
-                                    </ul>
-                                </li>
-                                <li>`button { ... }`, `button:hover { ... }`, `button:active { ... }`: Estilos básicos para os botões. O `:hover` é para quando o mouse passa por cima, e `:active` é para quando o botão está sendo clicado.
-                                    <ul class="list-circle list-inside ml-6">
-                                        <li>`cursor: pointer;`: Muda o ícone do mouse para uma "mãozinha" quando ele passa por cima do botão.</li>
-                                        <li>`transition: background-color 0.3s ease, transform 0.2s ease;`: Anima suavemente a mudança de cor de fundo e o movimento do botão.</li>
-                                        <li>`outline: none;`: Remove o contorno azul chato que aparece em alguns navegadores quando você clica no botão.</li>
-                                        <li>`transform: translateY(-1px);` (no `:hover`): Levanta o botão um pouco, dando um efeito de "flutuar".</li>
-                                        <li>`transform: translateY(0);` (no `:active`): Volta o botão para a posição original quando clicado.</li>
-                                    </ul>
-                                </li>
-                            </ul>
+                            - `body { ... }`: Essas regras são para o corpo da sua página HTML, que é o fundo.
+                                - `background-color: transparent;`: **Essa é a linha mais importante aqui!** Ela faz o fundo da sua NUI ficar "invisível", permitindo que o jogo (GTA V) seja visto por trás. Se você colocar uma cor aqui, ela vai cobrir a tela do jogo!
+                                - `display: flex; justify-content: center; align-items: center; min-height: 100vh;`: Um combo mágico do CSS Flexbox! Ele faz com que o conteúdo dentro do `<body>` (no nosso caso, o `#container`) seja **centralizado** tanto na horizontal quanto na vertical na tela do jogo.
+                                - `overflow: hidden;`: Garante que não apareçam barras de rolagem indesejadas se o conteúdo for maior que a tela.
+                            - `.nui-hidden { display: none !important; }`: Esta classe é a "chave liga/desliga" da sua interface. Quando ela está aplicada, o elemento simplesmente desaparece da tela. O `!important` força essa regra a ter prioridade.
+                            - `#container { ... }`: Aqui estilizamos o nosso principal bloco `div` com `id="container"`.
+                                - `background: rgba(44, 62, 80, 0.9);`: Um fundo escuro semi-transparente. O `0.9` é a opacidade (quão transparente é).
+                                - `padding`, `border-radius`, `box-shadow`, `max-width`, `width`, `border`: São propriedades para controlar o espaçamento interno, arredondar cantos, adicionar sombra, e controlar a largura de forma responsiva.
+                                - `transform: translateY(20px); opacity: 0; transition: ...;`: Essas linhas são para criar uma **animação suave**! A interface começa um pouco para baixo (`translateY(20px)`) e invisível (`opacity: 0`), e a `transition` diz que qualquer mudança nessas propriedades será animada em 0.5 segundos.
+                            - `#container.is-visible { ... }`: Quando o JavaScript adiciona a classe `is-visible` ao `#container`, essas regras são aplicadas:
+                                - `transform: translateY(0); opacity: 1;`: A interface volta para a posição normal e fica totalmente visível, com a animação suave.
+                            - `button { ... }`, `button:hover { ... }`, `button:active { ... }`: Estilos básicos para os botões. O `:hover` é para quando o mouse passa por cima, e `:active` é para quando o botão está sendo clicado.
                         </p>
-                        <p class="mt-4">Com o `CSS`, nossa tela já tem um visual profissional! Agora, vamos fazê-la reagir aos cliques do jogador com `JavaScript`.</p>
+                        <p class="mt-4 text-gray-600">Com o CSS, nossa tela já tem um visual profissional! Agora, vamos fazê-la reagir aos cliques do jogador com JavaScript.</p>
                     </article>
                     
-                    <article id="s5_3" class="mb-8 p-6 bg-white rounded-lg shadow-sm scroll-mt-24">
-                        <h3 class="text-2xl font-semibold mb-3">5.3 Interatividade com JavaScript (`script.js`): A Inteligência da Sua Tela</h3>
-                        <p class="mb-4">O `script.js` é onde a mágica da interação acontece. Ele é o "`ouvido`" e a "`voz`" da sua `NUI`. Ele ouve o que o `client.lua` manda, mostra/esconde a tela, e também ouve o que o jogador faz (como cliques em botões) para mandar de volta para o `client.lua`.</p>
+                    <article id="s5_3" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">5.3 Interatividade com JavaScript (`script.js`): A Inteligência da Sua Tela</h3>
+                        <p class="mb-4 text-gray-600">O `script.js` é onde a mágica da interação acontece. Ele é o "ouvido" e a "voz" da sua NUI. Ele ouve o que o `client.lua` manda, mostra/esconde a tela, e também ouve o que o jogador faz (como cliques em botões) para mandar de volta para o `client.lua`.</p>
                          <div class="code-block">
                             <pre><code class="language-javascript">document.addEventListener('DOMContentLoaded', function() {
     // Pegamos os elementos HTML pelos seus IDs para poder mexer neles com JavaScript.
@@ -939,7 +1041,788 @@ button:active {
                                 </div>
                             </div>
                         </div>
-                        <p class="mt-4">
+                        <p class="mt-4 text-gray-600">
                             <strong>Explicação linha a linha do `script.js`:</strong><br>
-                            <ul class="list-disc list-inside ml-4">
-                                <li>`document.addEventListener('DOMContentLoaded', function() { ... })`: **Sempre coloque seu código JavaScript principal dentro disso!** Ele garante que todo o `HTML` da sua página já foi carregado e está pronto para ser manipulado pelo `JavaScript`. Se o `JavaScript` tentar mexer em algo que ainda não exi
+                            - `document.addEventListener('DOMContentLoaded', function() { ... })`: **Sempre coloque seu código JavaScript principal dentro disso!** Ele garante que todo o HTML da sua página já foi carregado e está pronto para ser manipulado pelo JavaScript. Se o JavaScript tentar mexer em algo que ainda não existe no HTML, dará erro.
+                            - `const container = document.getElementById('container');`: Pegamos o elemento HTML que tem o `id="container"` e guardamos ele em uma variável `container`. Agora podemos mexer nesse elemento pelo JavaScript! Fazemos o mesmo para os botões e a div de feedback.
+                            - `function mostrarNUI()` e `function esconderNUI()`: São funções que criamos para controlar a visibilidade da interface. Elas adicionam ou removem as classes CSS (`nui-hidden` e `is-visible`) que definem se a tela aparece ou não, ativando as animações que fizemos no CSS. O `setTimeout` é para garantir que a animação seja ativada corretamente.
+                            - `window.addEventListener('message', function(evento) { ... })`: **Essa é a ponte do Lua para o NUI!** Este código fica "ouvindo" por qualquer mensagem que o `client.lua` envia usando `SendNUIMessage()`.
+                                - `const dadosRecebidos = evento.data;`: A mensagem que o Lua enviou (um objeto) vem dentro de `evento.data`.
+                                - `if (dadosRecebidos.acao === 'mostrar') { ... }`: Verificamos qual "ação" o Lua nos mandou. Se for `'mostrar'`, exibimos a NUI. Se for `'esconder'`, ocultamos. Se for `'atualizarFeedback'`, mostramos a mensagem.
+                            - `btnInteragir.addEventListener('click', function() { ... })`: Adiciona um "ouvinte de clique" ao botão "Interagir". Quando o jogador clica, o código aqui dentro é executado.
+                                - `fetch(`https://${GetParentResourceName()}/cliqueDoBotao`, { ... })`: **Essa é a ponte do NUI para o Lua!** É como o JavaScript envia uma mensagem para o `client.lua`.
+                                    - `https://${GetParentResourceName()}/`: `GetParentResourceName()` é uma função mágica do FiveM que te dá o nome do seu recurso (ex: `meu_primeiro_recurso`). A URL é construída para "chamar" um `callback` no Lua.
+                                    - `/cliqueDoBotao`: É o nome do `callback` que você registrou lá no seu `client.lua` com `RegisterNUICallback('cliqueDoBotao', ...)`.
+                                    - `method: 'POST'`: Diz que estamos enviando dados.
+                                    - `headers: { 'Content-Type': 'application/json; charset=UTF8' }`: Informa que os dados que estamos enviando são no formato JSON.
+                                    - `body: JSON.stringify({ ... })`: **MUITA ATENÇÃO AQUI!** Os dados que você quer enviar para o Lua (como o `idDoBotao` e `valorAleatorio`) devem ser um objeto JavaScript, e depois transformados em uma **string JSON** usando `JSON.stringify()`. O Lua vai receber isso como uma tabela.
+                                - `.then(resposta => resposta.json())`: Depois que você envia a mensagem, o Lua pode mandar uma resposta de volta. Essa linha "espera" essa resposta e tenta convertê-la de JSON para um objeto JavaScript.
+                                - `.then(dadosDoLua => { ... })`: Uma vez que a resposta do Lua chega e é convertida, este bloco é executado. Você pode usar `dadosDoLua` para atualizar a tela ou fazer algo com o que o Lua te disse.
+                                - `.catch(erro => { ... })`: Se acontecer algum problema na comunicação, isso será capturado aqui.
+                                    - `console.error(...)`: Para depurar, use isso para ver mensagens de erro no console do navegador (você abre com F12).
+                                    - `mensagemFeedbackDiv.textContent = 'Erro ao se comunicar com o back-end.';`: Mostra uma mensagem de erro para o usuário na tela.
+                            - `btnClose.addEventListener('click', ...)` e `document.addEventListener('keydown', ...)`: Semelhantes ao `btnInteragir`, mas feitos para fechar a NUI. Eles enviam uma mensagem para o callback `escape` no Lua, que por sua vez esconde a NUI.
+                        </p>
+                        <p class="mt-4 text-gray-600">Com este JavaScript, sua interface NUI está viva! Ela pode conversar com o jogo e com o servidor, permitindo que o jogador interaja e receba feedback de forma dinâmica.</p>
+                    </article>
+                </section>
+
+                <section id="s6" class="mb-16 scroll-mt-24">
+                    <h2 class="text-4xl font-extrabold border-b border-blue-200 pb-4 mb-8 text-blue-800">6. Integração Completa: A Dança da Comunicação</h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-8">Agora que você conhece as peças, vamos ver como elas se encaixam em uma "dança" perfeita de comunicação. Esta seção mostra o fluxo completo: como a interface aparece, como ela manda mensagens para o Lua e como recebe feedback, tudo em um exemplo prático e simplificado.</p>
+
+                    <article id="s6_1" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">6.1 Abrindo e Fechando a Interface: O Palco e a Cortina</h3>
+                        <p class="mb-4 text-gray-600">Para ter uma boa experiência de jogo, sua NUI não pode ficar o tempo todo na tela. Ela deve aparecer quando o jogador precisa e sumir quando não precisa mais. Veja o passo a passo de como isso acontece:</p>
+                        <p class="font-bold mt-4 text-gray-800">Fluxo para Abrir a NUI:</p>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                            <li><strong>Jogador Ativa (No Jogo):</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>Você (o jogador) digita `/abrirtela` no chat do FiveM.</li>
+                                    <li>O script `client.lua` "ouve" esse comando por causa do `RegisterCommand('abrirtela', ...)` que configuramos.</li>
+                                </ul>
+                            </li>
+                            <li><strong>`client.lua` Dá o Sinal:</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>No `client.lua`, a função `MostrarNUI()` é chamada.</li>
+                                    <li>Essa função faz duas coisas importantes:
+                                        <ul class="list-circle list-inside ml-6">
+                                            <li>`SetNuiFocus(true, true)`: Diz ao FiveM: "Agora, o jogador vai interagir com a tela NUI. Mostre o cursor do mouse!". Isso é como acender os refletores na NUI.</li>
+                                            <li>`SendNUIMessage({ acao = 'mostrar' })`: Manda uma mensagem (um "sinal") para o JavaScript da sua NUI dizendo: "É hora de aparecer!".</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>NUI (`script.js`) Aparece na Tela:</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>No `script.js` da sua NUI, o `window.addEventListener('message', ...)` que criamos "pega" o sinal `{ acao = 'mostrar' }` que veio do Lua.</li>
+                                    <li>O JavaScript então chama a função `mostrarNUI()` (do lado do JS), que remove a classe `nui-hidden` (e adiciona `is-visible`) do seu contêiner principal (`#container`).</li>
+                                    <li>Pronto! Sua interface HTML aparece na tela do jogador, com a animação suave que configuramos no CSS.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p class="font-bold mt-6 text-gray-800">Fluxo para Fechar a NUI:</p>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                            <li><strong>Jogador Ativa (No Jogo ou NUI):</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li><strong>Opção 1: Pressiona ESC (no jogo):</strong> Nosso `Citizen.CreateThread` no `client.lua` está sempre de olho se o jogador soltou a tecla ESC. Se sim, ele chama `EsconderNUI()`.</li>
+                                    <li><strong>Opção 2: Clica no Botão "Fechar" (na NUI):</strong> O jogador clica no botão "Fechar NUI" na sua interface. O `script.js` ouve esse clique e faz uma requisição `fetch` para o `client.lua` no `callback 'escape'`.</li>
+                                </ul>
+                            </li>
+                            <li><strong>`client.lua` Dá o Sinal de Despedida:</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>Seja qual for a opção de fechamento (ESC ou botão), a função `EsconderNUI()` no `client.lua` é chamada.</li>
+                                    <li>Essa função faz o inverso:
+                                        <ul class="list-circle list-inside ml-6">
+                                            <li>`SetNuiFocus(false, false)`: Devolve o controle do jogo para o jogador e esconde o cursor do mouse. A NUI "sai de cena".</li>
+                                            <li>`SendNUIMessage({ acao = 'esconder' })`: Manda um sinal para o JavaScript da sua NUI dizendo: "É hora de sumir!".</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>NUI (`script.js`) Desaparece da Tela:</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>O `window.addEventListener('message', ...)` no `script.js` pega o sinal `{ acao = 'esconder' }`.</li>
+                                    <li>O JavaScript então chama a função `esconderNUI()` (do lado do JS), que remove a classe `is-visible` e adiciona de volta a `nui-hidden` ao seu contêiner `#container`.</li>
+                                    <li>Sua interface HTML desaparece suavemente da tela.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p class="mt-4 text-gray-600">Essa coreografia entre o Lua e o JavaScript garante que sua NUI apareça e desapareça de forma suave e controlada, proporcionando uma ótima experiência ao jogador!</p>
+                    </article>
+
+                    <article id="s6_2" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">6.2 Enviando e Recebendo Mensagens: O Telefone entre Front e Back</h3>
+                        <p class="mb-4 text-gray-600">A verdadeira mágica da NUI está na troca de mensagens entre sua interface web e o código Lua. É como ter um telefone direto para a lógica do jogo! Vamos ver como funciona essa comunicação de mão dupla.</p>
+                        
+                        <p class="font-bold mt-4 text-gray-800">Enviando do Front-end (NUI - JavaScript) para o Back-end (Lua do Cliente):</p>
+                        <p class="mb-2 text-gray-600">Imagine que o jogador clica em um botão na sua NUI para "comprar" algo. Você precisa avisar o Lua sobre isso.</p>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                            <li><strong>Ação na NUI (JavaScript):</strong> O jogador clica no botão "Interagir com o Back-end" na sua tela NUI.
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>No `script.js`, o `btnInteragir.addEventListener('click', ...)` detecta o clique.</li>
+                                    <li>Ele dispara uma requisição `fetch` para o `client.lua`. O endereço da requisição é `https://SEU_RECURSO/cliqueDoBotao`.</li>
+                                    <li>No `body` da requisição, você envia um objeto JavaScript (convertido para JSON) com os detalhes do clique, tipo `{ idDoBotao: 'btnInteragir', valorAleatorio: 0.75 }`.</li>
+                                </ul>
+                            </li>
+                            <li><strong>`client.lua` Recebe a Mensagem:</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>No `client.lua`, o `RegisterNUICallback('cliqueDoBotao', ...)` está "escutando" por essa requisição.</li>
+                                    <li>Quando a requisição chega, a função dentro do `RegisterNUICallback` é executada, e a variável `dadosRecebidos` contém as informações que o JavaScript enviou.</li>
+                                    <li>Aqui, o Lua pode imprimir no console (`print`) e decidir o que fazer com os dados. Se for algo que precisa de segurança ou afetar outros jogadores, ele "passa a bola" para o servidor: `TriggerServerEvent('meuRecurso:fazerAlgoNoServidor', dadosRecebidos)`.</li>
+                                    <li>Por fim, o `client.lua` pode enviar uma resposta de volta para a NUI usando a função `funcaoResposta({ status: 'ok', mensagem: 'Recebido!' })`.</li>
+                                </ul>
+                            </li>
+                            <li><strong>NUI (`script.js`) Recebe o Feedback:</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>A parte `.then(dadosDoLua => ...)` da sua requisição `fetch` no `script.js` recebe a resposta que veio do Lua (`{ status: 'ok', mensagem: 'Recebido!' }`).</li>
+                                    <li>O JavaScript pode então atualizar a tela (ex: a div `mensagemFeedbackDiv`) para avisar o jogador que a ação foi processada.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p class="font-bold mt-6 text-gray-800">Enviando do Back-end (Lua do Cliente) para o Front-end (NUI - JavaScript):</p>
+                        <p class="mb-2 text-gray-600">Agora, imagine que o Lua quer mostrar uma informação nova na tela do jogador, tipo o saldo bancário ou um aviso.</p>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                            <li><strong>Evento no `client.lua` (ou Servidor):</strong> O Lua tem uma informação nova para a NUI.
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>No `client.lua`, você usa `SendNUIMessage({ acao = 'atualizarFeedback', mensagem: 'Saldo: $1500', cor: '#00FF00' })`. Essa mensagem vai direto para o JavaScript da NUI.</li>
+                                    <li>(Opcional) Se a informação vem do `server.lua` (ex: banco de dados), o servidor primeiro manda para o `client.lua` do jogador (`TriggerClientEvent`), e só então o `client.lua` manda para a NUI.</li>
+                                </ul>
+                            </li>
+                            <li><strong>NUI (`script.js`) Recebe a Mensagem e Atualiza:</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>O `window.addEventListener('message', ...)` no `script.js` da NUI "pega" essa nova mensagem.</li>
+                                    <li>O JavaScript verifica a `acao` da mensagem (no caso, `'atualizarFeedback'`) e usa os `dadosRecebidos` (a `mensagem` e a `cor`) para atualizar a `mensagemFeedbackDiv` na tela.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p class="mt-4 text-gray-600">Essa capacidade de enviar e receber mensagens de forma bidirecional é o que torna suas interfaces NUI poderosas e dinâmicas, criando uma experiência imersiva para o jogador!</p>
+                    </article>
+
+                    <article id="s6_3" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">6.3 Exemplo Prático: Sua Primeira Interação Completa!</h3>
+                        <p class="mb-4 text-gray-600">Vamos juntar tudo o que aprendemos em um cenário simples, mas completo! Imagine a seguinte história: o jogador abre a tela NUI, clica em um botão, o servidor processa algo, e o jogador recebe um aviso de volta na tela.</p>
+                        <p class="font-bold mt-4 text-gray-800">Cenário da Mágica:</p>
+                        <ol class="list-decimal list-inside space-y-3 text-gray-700">
+                            <li><strong>Você (Jogador) Abre a Tela:</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>No chat do FiveM, você digita: `/abrirtela`.</li>
+                                    <li>**No `client.lua`:** O `RegisterCommand('abrirtela', ...)` é acionado, e a função `MostrarNUI()` é chamada.</li>
+                                    <li>**No `client.lua`:** `SetNuiFocus(true, true)` ativa o foco na NUI e mostra seu mouse.</li>
+                                    <li>**No `client.lua`:** `SendNUIMessage({ acao = 'mostrar' })` envia o "sinal" para o JavaScript.</li>
+                                    <li>**Na NUI (`script.js`):** O `window.addEventListener('message', ...)` recebe o sinal. A função `mostrarNUI()` no JS é chamada, e a sua interface `#container` aparece na tela com uma animação suave.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Você Clica no Botão "Interagir":</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>Na tela NUI, você clica no botão "Interagir com o Back-end".</li>
+                                    <li>**Na NUI (`script.js`):** O `btnInteragir.addEventListener('click', ...)` detecta o clique.</li>
+                                    <li>**Na NUI (`script.js`):** Uma requisição `fetch` é feita para `https://SEU_RECURSO/cliqueDoBotao`, enviando um JSON com o `idDoBotao`.</li>
+                                </ul>
+                            </li>
+                            <li><strong>`client.lua` Recebe e Manda para o Servidor:</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>**No `client.lua`:** O `RegisterNUICallback('cliqueDoBotao', ...)` é ativado. Ele recebe os dados que você clicou (o `idDoBotao`).</li>
+                                    <li>**No `client.lua`:** Ele pode imprimir uma mensagem para você ver no console (`F8`).</li>
+                                    <li>**No `client.lua`:** Para a ação ser processada de forma segura, ele "passa a bola" para o servidor: `TriggerServerEvent('meuRecurso:fazerAlgoNoServidor', dadosDoBotao)`.</li>
+                                </ul>
+                            </li>
+                            <li><strong>`server.lua` Processa e Responde:</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>**No `server.lua`:** O `RegisterNetEvent('meuRecurso:fazerAlgoNoServidor')` e seu `AddEventHandler` são acionados.</li>
+                                    <li>**No `server.lua`:** Ele recebe os dados do clique e o `jogadorID` (quem clicou). Aqui, ele simula dar "água" ao jogador (no seu código real, você faria a lógica de verdade, como checar permissão e dar itens via QBcore).</li>
+                                    <li>**No `server.lua`:** Ele envia uma mensagem de feedback para o chat do jogador: `TriggerClientEvent('chat:addMessage', jogadorID, { ... })`.</li>
+                                </ul>
+                            </li>
+                            <li><strong>`client.lua` e NUI Recebem Feedback:</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>**No `client.lua`:** A mensagem de chat que o servidor enviou é recebida (e aparecerá no chat do jogo).</li>
+                                    <li>**Na NUI (`script.js`):** A resposta da função `funcaoResposta('ok')` (do `RegisterNUICallback` no passo 3) volta para a requisição `fetch`.</li>
+                                    <li>**Na NUI (`script.js`):** A parte `.then(dadosDoLua => ...)` é ativada. O JavaScript então atualiza a `mensagemFeedbackDiv` na tela da NUI para dizer "Lua respondeu: ok".</li>
+                                </ul>
+                            </li>
+                            <li><strong>Você Fecha a Tela:</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>Você aperta `ESC` ou clica no botão "Fechar NUI".</li>
+                                    <li>**No `client.lua`:** O `Citizen.CreateThread` ou o `RegisterNUICallback('escape', ...)` é acionado e chama `EsconderNUI()`.</li>
+                                    <li>**No `client.lua`:** `SetNuiFocus(false, false)` devolve o controle do jogo.</li>
+                                    <li>**No `client.lua`:** `SendNUIMessage({ acao = 'esconder' })` envia o sinal para o JS.</li>
+                                    <li>**Na NUI (`script.js`):** O `window.addEventListener('message', ...)` recebe o sinal. A função `esconderNUI()` no JS é chamada, e a tela desaparece suavemente.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p class="mt-4 text-gray-600">Este é o ciclo completo! Cada parte trabalhando junto para criar uma experiência interativa. Parabéns, você acabou de entender sua primeira grande integração front-end e back-end no FiveM!</p>
+                    </article>
+                </section>
+
+                <section id="s7" class="mb-16 scroll-mt-24">
+                    <h2 class="text-4xl font-extrabold border-b border-blue-200 pb-4 mb-8 text-blue-800">7. Avançando o Projeto: De Iniciante a Construtor</h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-8">Com o básico dominado, é hora de ir além! Nesta seção, vamos ver como deixar seus scripts mais seguros, organizados e prontos para funcionalidades mais avançadas. Pense nisso como subir de nível no seu desenvolvimento!</p>
+
+                    <article id="s7_1" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">7.1 Validação e Segurança: Protegendo sua Criação</h3>
+                        <p class="mb-4 text-gray-600">Imagine que você está construindo uma casa e alguém tenta entrar pela janela sem permissão. No desenvolvimento de scripts, isso é um "exploit"! **A segurança é a coisa mais importante.** Nunca confie em informações que vêm diretamente do computador do jogador (cliente) ou da sua interface NUI, pois elas podem ser facilmente alteradas por alguém mal-intencionado.</p>
+                        <p class="mb-4 text-gray-600">A regra de ouro, que você deve gravar: **"Tudo o que é importante e precisa ser seguro, valide no Servidor!"**</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Validação no Servidor (`server.lua`): O Guarda Costas</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>Sempre, sempre, sempre verifique e "limpe" os dados que você recebe do cliente (seja da NUI via `client.lua`, ou de um `TriggerServerEvent`).</li>
+                                    <li>**Exemplos Práticos:**
+                                        <ul class="list-circle list-inside ml-6">
+                                            <li>Se a NUI envia uma quantia de dinheiro para o jogador "sacar", o `server.lua` DEVE verificar se o jogador realmente TEM aquele dinheiro antes de tirá-lo.</li>
+                                            <li>Se o cliente pede para dar um item, o servidor precisa checar se o item existe, se a quantidade é válida (não negativa, por exemplo) e se o jogador tem permissão para receber aquele item de tal forma.</li>
+                                            <li>Use funções como `type()` (para ver se é número, string, etc.), compare valores (`>` ou `<`), e, para textos, aprenda sobre saneamento para evitar "injeção" de código malicioso.</li>
+                                        </ul>
+                                    </li>
+                                    <li>**Permissões:** Se você tiver funções que só administradores podem usar (tipo banir alguém), use um sistema de permissões (o QBcore já tem um!) no `server.lua` para ter certeza que só quem pode, usa.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Validação no Front-end (NUI - JavaScript): O Atendente Educado</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>A validação aqui NÃO é para segurança, mas para melhorar a experiência do jogador. Ela serve para dar um aviso rápido ao jogador se ele digitar algo errado *antes* de enviar para o servidor.</li>
+                                    <li>Exemplo: Se um campo pede um número e o jogador digita letras, o JavaScript pode avisar na hora: "Por favor, digite apenas números!".</li>
+                                    <li>Use validações HTML5 (`<input type="number" required>`) e JavaScript para checar campos (`input.value === ''` para campo vazio, `isNaN(value)` para ver se não é número).</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p class="mt-4 text-gray-600">Pense como um detetive: como alguém tentaria "trapacear" meu script? E então, construa defesas no servidor para isso. Segurança é uma prioridade, não um extra!</p>
+                    </article>
+
+                    <article id="s7_2" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">7.2 Modularização do Código: Organizanto seu Projeto Grande</h3>
+                        <p class="mb-4 text-gray-600">Quando seu script começa a crescer, ter tudo em um único `client.lua` ou `server.lua` vira uma bagunça! A **modularização** é como dividir uma casa em cômodos: cada cômodo (arquivo) tem sua função e é mais fácil de arrumar. Isso torna seu código mais limpo, fácil de entender e de dar manutenção.</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Dividindo por Funcionalidade:</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>Crie arquivos Lua menores para cada tipo de lógica. Por exemplo:
+                                        <ul class="list-circle list-inside ml-6">
+                                            <li>No lado do cliente: um arquivo para cuidar da NUI (`client_nui.lua`), outro para eventos do jogo (`client_events.lua`), etc.</li>
+                                            <li>No lado do servidor: um arquivo para mexer com o banco de dados (`server_database.lua`), outro para a lógica principal (`server_main.lua`), etc.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Sua estrutura de pastas pode ficar assim:
+                                    <div class="bg-gray-800 text-white p-6 rounded-xl font-mono text-base shadow-lg mt-4">
+                                        <div class="flex items-center">
+                                            <span class="mr-2 text-yellow-300">📁</span><span>meu_recurso/</span>
+                                        </div>
+                                        <div class="pl-8 border-l-2 border-gray-700 ml-4 mt-2">
+                                            <div class="flex items-center mt-2">
+                                                <span class="mr-2 text-yellow-300">📄</span><span class="text-yellow-400">fxmanifest.lua</span>
+                                            </div>
+                                            <div class="flex items-center mt-2">
+                                                <span class="mr-2 text-yellow-300">📁</span><span>client/</span> <span class="text-gray-400 ml-2">// Pasta para scripts do cliente</span>
+                                            </div>
+                                            <div class="pl-8 border-l-2 border-gray-700 ml-4 mt-2">
+                                                <div class="flex items-center mt-2">
+                                                    <span class="mr-2 text-yellow-300">📄</span><span class="text-blue-400">main.lua</span> <span class="text-gray-400 ml-2">// Lógica principal de inicialização do cliente</span>
+                                                </div>
+                                                <div class="flex items-center mt-2">
+                                                    <span class="mr-2 text-yellow-300">📄</span><span class="text-blue-400">nui_handler.lua</span> <span class="text-gray-400 ml-2">// Funções de MostrarNUI, EsconderNUI, RegisterNUICallback</span>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center mt-2">
+                                                <span class="mr-2 text-yellow-300">📁</span><span>server/</span> <span class="text-gray-400 ml-2">// Pasta para scripts do servidor</span>
+                                            </div>
+                                            <div class="pl-8 border-l-2 border-gray-700 ml-4 mt-2">
+                                                <div class="flex items-center mt-2">
+                                                    <span class="mr-2 text-yellow-300">📄</span><span class="text-green-400">main.lua</span> <span class="text-gray-400 ml-2">// Lógica principal de inicialização do servidor</span>
+                                                </div>
+                                                <div class="flex items-center mt-2">
+                                                    <span class="mr-2 text-yellow-300">📄</span><span class="text-green-400">database.lua</span> <span class="text-gray-400 ml-2">// Funções para interagir com o banco de dados</span>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center mt-2">
+                                                <span class="mr-2 text-yellow-300">📁</span><span>html/</span> <span class="text-gray-400 ml-2">// Sua pasta NUI (como antes)</span>
+                                            </div>
+                                            <div class="flex items-center mt-2">
+                                                <span class="mr-2 text-yellow-300">📄</span><span class="text-purple-400">shared.lua</span> <span class="text-gray-400 ml-2">// Coisas que cliente E servidor precisam saber</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </li>
+                                    <li>E no seu `fxmanifest.lua`, você diria ao FiveM para carregar esses arquivos assim:
+<div class="code-block mt-4">
+    <pre><code class="language-lua">-- ... (outras configurações)
+
+client_scripts {
+    'client/main.lua',
+    'client/nui_handler.lua'
+}
+server_scripts {
+    'server/main.lua',
+    'server/database.lua'
+}
+shared_script 'shared.lua'
+
+-- ... (outras configurações de NUI e files)
+</code></pre>
+                            <div class="explanation-area mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-gray-700 hidden">
+                                <p class="font-semibold mb-2">Explicação da API Gemini:</p>
+                                <div class="explanation-content"></div>
+                                <div class="loading-spinner text-center mt-2 hidden">
+                                    <div class="animate-spin inline-block w-4 h-4 border-2 border-current border-t-transparent text-blue-600 rounded-full" role="status"></div>
+                                    <span class="ml-2">Carregando explicação...</span>
+                                </div>
+                            </div>
+</div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>Uso de `shared.lua` (`shared_script`):</strong> Se você tem variáveis ou funções que precisam ser acessadas tanto pelo `client.lua` quanto pelo `server.lua` (como configurações gerais do seu recurso, nomes de eventos, ou constantes), crie um arquivo `shared.lua` e liste-o como `shared_script` no `fxmanifest.lua`. Isso evita repetir código!</li>
+                        </ul>
+                        <p class="mt-4 text-gray-600">Com a modularização, seu código fica organizado, fácil de encontrar e de trabalhar, principalmente se você for adicionar mais funcionalidades ou se outras pessoas forem ajudar no seu projeto!</p>
+                    </article>
+
+                    <article id="s7_3" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">7.3 Depuração e Logging: O Detetive de Códigos</h3>
+                        <p class="mb-4 text-gray-600">Ninguém acerta de primeira! Erros (ou "bugs") são parte normal do desenvolvimento. A "depuração" é o processo de encontrar e consertar esses erros. E o "logging" (registrar mensagens) é a sua melhor ferramenta para isso!</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>No Lado do Lua (`client.lua` e `server.lua`):</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>`print()`: Seu superpoder! Use `print('Olá, estou aqui!')` para mostrar mensagens no console.
+                                        <ul class="list-circle list-inside ml-6">
+                                            <li>Para ver os prints do `client.lua` e erros da NUI, abra o console do FiveM no jogo (geralmente apertando `F8`).</li>
+                                            <li>Para ver os prints do `server.lua` e erros do servidor, olhe o console da janela do seu FXServer.</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>Cores no Console:</strong> Use códigos de cor com `print()` para deixar suas mensagens mais fáceis de ler:
+                                        <ul class="list-circle list-inside ml-6">
+                                            <li>`print('^1ERRO: ^0Algo deu errado!')` (vermelho)</li>
+                                            <li>`print('^2SUCESSO: ^0Item adicionado!')` (verde)</li>
+                                            <li>`print('^3AVISO: ^0Verifique a conexão.')` (amarelo)</li>
+                                            <li>`^0` volta à cor padrão (branco).</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>Comandos Úteis:</strong> No console do jogo (`F8`):
+                                        <ul class="list-circle list-inside ml-6">
+                                            <li>`refresh`: Recarrega *todos* os recursos. Útil para aplicar mudanças rápidas.</li>
+                                            <li>`restart meu_recurso`: Recarrega *apenas* o seu recurso. Mais rápido e focado.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>No Lado do Front-end (NUI - JavaScript e CSS):</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>`console.log()`: A versão JavaScript do `print()`. Use-o no seu `script.js`.
+<div class="code-block mt-4">
+    <pre><code class="language-javascript">console.log('NUI: Botão foi clicado!');
+console.error('NUI ERRO: Não foi possível enviar a mensagem para o Lua.');
+console.warn('NUI AVISO: Dados incompletos.');
+</code></pre>
+                            <div class="explanation-area mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-gray-700 hidden">
+                                <p class="font-semibold mb-2">Explicação da API Gemini:</p>
+                                <div class="explanation-content"></div>
+                                <div class="loading-spinner text-center mt-2 hidden">
+                                    <div class="animate-spin inline-block w-4 h-4 border-2 border-current border-t-transparent text-blue-600 rounded-full" role="status"></div>
+                                    <span class="ml-2">Carregando explicação...</span>
+                                </div>
+                            </div>
+</div>
+                                    </li>
+                                    <li><strong>Ferramentas de Desenvolvedor do Navegador:</strong> A ferramenta mais poderosa para sua NUI!
+                                        <ul class="list-circle list-inside ml-6">
+                                            <li>Quando sua NUI estiver aberta no jogo, geralmente você pode apertar `F12` para abrir as ferramentas de desenvolvedor.</li>
+                                            <li>**Aba "Console":** Veja todos os seus `console.log`, `error`, `warn` e erros de JavaScript.</li>
+                                            <li>**Aba "Elements":** Permite inspecionar (ver e até mudar na hora) o HTML e CSS da sua NUI. Ótimo para testar estilos!</li>
+                                            <li>**Aba "Network":** Mostra todas as requisições `fetch` que sua NUI envia para o Lua e as respostas que ela recebe. Você vê se deu erro, o que foi enviado e o que voltou.</li>
+                                            <li>**Aba "Sources":** Permite colocar "breakpoints" no seu JavaScript para pausar o código e ver o valor das variáveis passo a passo.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p class="mt-4 text-gray-600">Depurar é uma arte! Quanto mais você praticar, mais rápido você vai encontrar e consertar os probleminhas do seu código. Não desanime com os erros, eles são seus professores!</p>
+                    </article>
+
+                    <article id="s7_4" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">7.4 Adicionando Funcionalidades Avançadas: Indo Além!</h3>
+                        <p class="mb-4 text-gray-600">Você já tem o básico da integração. Agora, vamos sonhar um pouco e ver o que mais você pode criar com esse conhecimento! Essas são funcionalidades mais avançadas que você pode explorar no futuro:</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Conectando com Bancos de Dados:</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>Para guardar informações de forma permanente (tipo dinheiro do jogador, inventário, propriedades), você precisa de um banco de dados. MySQL é o mais usado no FiveM.</li>
+                                    <li>**IMPORTANTE:** A comunicação com o banco de dados é feita **SOMENTE no `server.lua`**. Nunca coloque senhas ou informações de banco de dados no lado do cliente ou na NUI, pois elas seriam expostas!</li>
+                                    <li>O `server.lua` vai receber o pedido do `client.lua` (que pode vir da NUI), vai conversar com o banco de dados (usando bibliotecas Lua como `mysql-async`), e depois vai enviar o resultado de volta para o `client.lua` para atualizar a NUI.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Menus e Telas Dinâmicas na NUI:</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>Em vez de ter menus que são sempre iguais, você pode criar telas NUI que se preenchem sozinhas com informações que vêm do servidor. Ex: uma loja que mostra os itens disponíveis em tempo real, ou um painel de administração que lista os jogadores online.</li>
+                                    <li>Para isso, o `server.lua` pegaria os dados (do banco de dados, por exemplo), enviaria para o `client.lua`, que por sua vez usaria `SendNUIMessage` para enviar para o JavaScript da NUI. O JavaScript então criaria os elementos HTML na hora para mostrar esses dados.</li>
+                                    <li>Para interfaces muito complexas, você pode até usar frameworks JavaScript famosos como **React**, **Vue.js** ou **Svelte** dentro da sua NUI. Isso exige um pouco mais de configuração (com ferramentas como Webpack ou Vite), mas deixa o desenvolvimento de interfaces complexas muito mais fácil e organizado.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Otimização de Performance: Deixando o Jogo Fluido</strong>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>Scripts mal feitos podem deixar o servidor ou o jogo "pesado" (dar lag). Sempre que criar algo, pense em como deixar ele o mais eficiente possível.</li>
+                                    <li>**Lembre-se do `Citizen.Wait(0)`:** Nunca faça loops infinitos sem ele em `Citizen.CreateThread`, senão seu script vai travar o jogo!</li>
+                                    <li>**Minimize eventos de rede:** Não fique mandando mensagens entre cliente e servidor a cada milissegundo se não for necessário. Envie dados apenas quando houver uma mudança importante.</li>
+                                    <li>**Queries de Banco de Dados:** Se for usar banco de dados, aprenda a fazer as "perguntas" (queries) de forma eficiente para não sobrecarregar o servidor.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p class="mt-4 text-gray-600">Essas são apenas algumas ideias. O mundo do desenvolvimento FiveM é enorme, e com a base que você está construindo, as possibilidades são infinitas!</p>
+                    </article>
+                </section>
+
+                <section id="s8" class="mb-16 scroll-mt-24">
+                    <h2 class="text-4xl font-extrabold border-b border-blue-200 pb-4 mb-8 text-blue-800">8. Recursos Adicionais: Onde Buscar Mais Conhecimento</h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-8">Nenhum curso é o fim do aprendizado! Para continuar crescendo como desenvolvedor(a) de FiveM, é essencial saber onde buscar mais informações, tirar dúvidas e se conectar com outras pessoas. Estes recursos serão seus melhores amigos na jornada!</p>
+
+                    <article id="s8_1" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">8.1 Links para a Documentação Oficial: Seu Manual de Referência</h3>
+                        <p class="mb-4 text-gray-600">A documentação oficial é a fonte mais confiável e completa de informações sobre o FiveM. Sempre que tiver uma dúvida sobre uma função ou como algo funciona, consulte-a!</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Documentação FiveM (docs.fivem.net):</strong>
+                                <ul class="list-circle list-inside ml-4">
+                                    <li><a href="https://docs.fivem.net/" target="_blank" class="text-blue-600 hover:underline">Página Principal da Documentação FiveM</a>: É como a enciclopédia do FiveM. Tem informações sobre TUDO: as funções Lua para cliente e servidor, guias de como criar recursos, e explicações sobre os conceitos gerais. **Guarde este link no seus favoritos!**</li>
+                                    <li><a href="https://docs.fivem.net/docs/scripting-manual/nui/" target="_blank" class="text-blue-600 hover:underline">Guia da NUI (Native UI)</a>: A seção específica que explica como a NUI funciona em detalhes. Ela mostra as funções Lua que você usa para falar com a NUI (`SendNUIMessage`, `SetNuiFocus`) e como o JavaScript da NUI usa `fetch` para falar de volta com o Lua. Essencial para quem quer dominar a integração!</li>
+                                </ul>
+                            </li>
+                            <li><strong>Documentação QBcore:</strong>
+                                <ul class="list-circle list-inside ml-4">
+                                    <li>Como o QBcore é um framework, a documentação dele geralmente está no **repositório oficial do QBcore no GitHub**. Procure por "qb-core framework FiveM GitHub". Lá, você encontrará uma seção "Wiki" ou "Docs" que explica todas as funções e eventos específicos do QBcore, como mexer com dinheiro, inventário e dados do jogador.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </article>
+
+                    <article id="s8_2" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">8.2 Fóruns e Comunidades: Não Programe Sozinho(a)!</h3>
+                        <p class="mb-4 text-gray-600">Aprender com outras pessoas é uma das melhores formas de crescer! Fóruns e comunidades online são ótimos lugares para tirar dúvidas, compartilhar suas criações e se manter atualizado(a).</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>FiveM Forums:</strong>
+                                <ul class="list-circle list-inside ml-4">
+                                    <li><a href="https://forum.fivem.net/" target="_blank" class="text-blue-600 hover:underline">Fórum Oficial do FiveM</a>: É o ponto de encontro principal de toda a comunidade. Você pode encontrar tutoriais, fazer perguntas, ver projetos que outras pessoas fizeram e participar de discussões. Não tenha vergonha de perguntar, todo mundo já foi iniciante!</li>
+                                </ul>
+                            </li>
+                            <li><strong>Servidores Discord:</strong>
+                                <ul class="list-circle list-inside ml-4">
+                                    <li>Muitos projetos grandes (como o QBcore), servidores famosos e grupos de desenvolvedores têm seus próprios servidores no Discord. Lá, você pode conseguir ajuda em tempo real, conversar sobre ideias e até encontrar parceiros para projetos. Procure por links de convite nos repositórios do GitHub ou nos próprios fóruns.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </article>
+
+                    <article id="s8_3" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">8.3 Exemplos de Outros Scripts e Análise de Código: Aprender com a Experiência Alheia</h3>
+                        <p class="mb-4 text-gray-600">Uma das formas mais rápidas de aprender é lendo o código de outros desenvolvedores. É como ter um mentor ensinando através do que ele já criou!</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>GitHub:</strong>
+                                <ul class="list-circle list-inside ml-4">
+                                    <li>Use a busca do GitHub para encontrar exemplos de recursos FiveM. Tente pesquisar por "FiveM NUI examples", "QBcore scripts", ou "FiveM Lua". Você vai encontrar muitos projetos de código aberto.</li>
+                                    <li>Ao analisar o código, preste atenção em como eles organizam as pastas, como os eventos são enviados e recebidos, como a NUI se comunica, e, principalmente, como eles fazem a validação de dados no lado do servidor para garantir a segurança.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Análise de Recursos Padrão:</strong>
+                                <ul class="list-circle list-inside ml-4">
+                                    <li>Baixe e explore o código-fonte dos próprios recursos do QBcore (tipo `qb-inventory`, `qb-shops`). Eles são ótimos exemplos de como construir sistemas complexos de forma organizada e eficiente.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Comparação de Abordagens:</strong>
+                                <ul class="list-circle list-inside ml-4">
+                                    <li>Você vai perceber que existem várias maneiras de resolver o mesmo problema. Compare as diferentes abordagens, entenda os pontos fortes e fracos de cada uma, e decida qual se encaixa melhor no seu projeto. Isso vai te ajudar a desenvolver seu próprio estilo e a otimizar suas soluções.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p class="mt-4 text-gray-600">Lembre-se: aprender a programar é uma jornada contínua. Seja curioso(a), pratique bastante, e não hesite em buscar e compartilhar conhecimento!</p>
+                    </article>
+                </section>
+
+                <section id="s9" class="mb-16 scroll-mt-24">
+                    <h2 class="text-4xl font-extrabold border-b border-blue-200 pb-4 mb-8 text-blue-800">9. Conclusão e Próximos Passos: Seu Caminho Adiante!</h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-8">Parabéns! Você chegou ao final deste curso abrangente e didático sobre a integração Front-end e Back-end para FiveM com QBcore e NUI. Você construiu uma base sólida e agora tem o conhecimento necessário para começar a criar recursos interativos e incríveis para o seu servidor!</p>
+                    
+                     <article id="s9_1" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">9.1 Resumo do Curso: O que Você Conquistou!</h3>
+                        <p class="mb-4 text-gray-600">Vamos revisar rapidamente os superpoderes que você adquiriu:</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>A Grande Conversa:</strong> Você entendeu como o `client.lua`, `server.lua` e a NUI (HTML/CSS/JS) se comunicam usando eventos e callbacks.</li>
+                            <li><strong>Ambiente Pronto:</strong> Você sabe como configurar o FXServer, integrar o QBcore e organizar as pastas do seu recurso.</li>
+                            <li><strong>Cérebro Lua:</strong> Você aprendeu a criar o `fxmanifest.lua` (o manual) e a escrever lógica nos scripts `client.lua` (o ajudante) e `server.lua` (o gerente geral).</li>
+                            <li><strong>Beleza Front-end:</strong> Você viu como criar a estrutura HTML (`index.html`), dar estilo com CSS (`style.css`) e adicionar a inteligência com JavaScript (`script.js`), fazendo a NUI interagir com o Lua.</li>
+                            <li><strong>Fluxo de Interação Completo:</strong> Você acompanhou um exemplo prático de como uma ação do jogador na NUI percorre todo o caminho até o servidor e volta com um feedback.</li>
+                            <li><strong>Maneiras de Programar Bem:</strong> Você aprendeu a importância da segurança (validar no servidor!), da organização (modularização) e como ser um detetive de erros (depuração e logging).</li>
+                            <li><strong>Caminhos para o Futuro:</strong> Exploramos para onde ir agora, com recursos oficiais e comunidades.</li>
+                        </ul>
+                        <p class="mt-4 text-gray-600">Você agora possui uma compreensão completa do fluxo de integração e das ferramentas necessárias para criar seus próprios recursos FiveM personalizados. O próximo passo é aplicar esse conhecimento!</p>
+                    </article>
+                    
+                     <article id="s9_2" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">9.2 Desafios e Projetos Práticos: Coloque a Mão na Massa!</h3>
+                        <p class="mb-4 text-gray-600">Teoria é importante, mas a prática é essencial! Para realmente fixar o conhecimento, tente criar os seguintes projetos. Não se preocupe em fazer tudo perfeito, o importante é começar e experimentar! Você pode usar o botão "Obter Dica ✨" para uma ajudinha se ficar travado(a).</p>
+                        <div class="mb-4">
+                            <label for="challenge-select" class="block text-lg font-medium text-gray-700 mb-2">Escolha um desafio para obter uma dica ✨:</label>
+                            <select id="challenge-select" class="mt-1 block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-lg rounded-lg shadow-sm">
+                                <option value="">Selecione um desafio...</option>
+                                <option value="Um menu de interação com o banco (verificar saldo, sacar, depositar), usando a API Gemini para explicar transações financeiras simples se o usuário clicar em um botão de "Ajuda".">Menu de Interação com o Banco</option>
+                                <option value="Um sistema de notificação customizado que aparece na tela, com diferentes tipos de notificações (sucesso, erro, informação) e um sistema de fila. Use a API Gemini para gerar frases de notificação de exemplo baseadas no tipo.">Sistema de Notificação Customizado</option>
+                                <option value="Um formulário de feedback que envia a mensagem do jogador para um log no servidor, incluindo validação de input no front-end e tratamento de erros no back-end. Use a API Gemini para sugerir categorias de feedback baseadas no texto digitado pelo usuário.">Formulário de Feedback</option>
+                                <option value="Um sistema de loja simples com itens dinâmicos. A NUI mostra os itens, e o servidor gerencia o inventário e a compra/venda.">Sistema de Loja Simples</option>
+                                <option value="Um painel de administração básico com opções para banir jogadores, dar itens ou teleportar. Tudo controlado pela NUI com validações rigorosas no servidor.">Painel de Administração Básico</option>
+                            </select>
+                            <button id="get-hint-button" class="mt-6 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 ease-in-out">
+                                Obter Dica ✨
+                            </button>
+                        </div>
+                        <div id="hint-area" class="mt-6 p-5 bg-green-50 border border-green-200 rounded-lg text-base text-gray-700 shadow-md hidden">
+                            <p class="font-bold mb-3 text-green-800">Dica da API Gemini:</p>
+                            <div class="hint-content"></div>
+                            <div class="loading-spinner text-center mt-3 hidden">
+                                <div class="animate-spin inline-block w-5 h-5 border-3 border-current border-t-transparent text-green-600 rounded-full" role="status"></div>
+                                <span class="ml-3">Carregando dica...</span>
+                            </div>
+                        </div>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700 mt-6">
+                           <li>**Menu de Interação com o Banco:** Crie um menu onde o jogador pode verificar o saldo (obtendo dados do servidor), sacar e depositar dinheiro (enviando a quantia para o servidor para validação e atualização do saldo).</li>
+                           <li>**Sistema de Notificação Customizado:** Desenvolva um pop-up de notificação NUI que aparece no canto da tela quando o jogador recebe uma mensagem do servidor (ex: "Você recebeu um novo item!", "Seu veículo foi consertado!"). Implemente diferentes tipos de notificação (sucesso, erro, aviso).</li>
+                           <li>**Formulário de Feedback:** Crie uma interface NUI com um campo de texto e um botão de "Enviar Feedback". Ao enviar, a mensagem deve ser processada no `client.lua` e depois enviada para o `server.lua` para ser registrada em um arquivo de log ou enviada para o console do administrador.</li>
+                           <li>**Sistema de Loja Simples:** Desenvolva uma NUI que exibe uma lista de itens disponíveis para compra. Quando o jogador clica em um item, a NUI envia a solicitação para o `client.lua`, que a encaminha para o `server.lua` para verificar dinheiro e adicionar o item ao inventário.</li>
+                           <li>**Painel de Administração Básico:** Crie uma NUI com um painel simples que permite a um administrador (valide no servidor!) realizar ações como banir jogadores (por ID), dar itens ou teleportar jogadores para coordenadas específicas.</li>
+                        </ul>
+                    </article>
+
+                    <article id="s9_3" class="mb-8 scroll-mt-24">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-700">9.3 Como se Tornar um Desenvolvedor de Scripts para FiveM: O Caminho do Especialista</h3>
+                        <p class="mb-4 text-gray-600">O desenvolvimento para FiveM é uma jornada fascinante e cheia de possibilidades! Para ir de iniciante a um verdadeiro especialista, siga estes conselhos valiosos:</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Pratique, Pratique, Pratique!</strong> A programação é como um esporte: quanto mais você joga, melhor você fica. Não tenha medo de errar, pois cada erro é uma oportunidade de aprendizado. Crie pequenos projetos, teste suas ideias e explore diferentes funcionalidades.</li>
+                            <li><strong>Explore o Ecossistema:</strong> O mundo FiveM está cheio de scripts criados pela comunidade. Baixe, abra e analise o código de outros desenvolvedores, especialmente aqueles que são de código aberto no GitHub. Veja como eles organizam as coisas, como resolvem problemas e como implementam funcionalidades. Isso vai expandir sua visão e te dar novas ideias.</li>
+                            <li><strong>Seja Ativo na Comunidade:</strong> Fóruns e servidores Discord são tesouros de conhecimento. Participe, faça perguntas (não existe pergunta boba!), ajude quem está começando e compartilhe suas descobertas. A comunidade é seu maior recurso de apoio.</li>
+                            <li><strong>Aprofunde-se nas Tecnologias Base:</strong>
+                                <ul class="list-circle list-inside ml-4">
+                                    <li><strong>Lua:</strong> É uma linguagem simples, mas poderosa. Entenda como funcionam as tabelas, funções, e como otimizar seu código Lua para que ele seja rápido e não cause lag no servidor.</li>
+                                    <li><strong>JavaScript Moderno:</strong> O JavaScript está sempre evoluindo. Mantenha-se atualizado com as novas funcionalidades (como `async/await`, desestruturação) para escrever código mais limpo e eficiente no seu front-end NUI.</li>
+                                    <li><strong>HTML/CSS Avançado:</strong> Aprenda sobre HTML semântico (usar as tags certas para o que elas representam), acessibilidade (fazer sua interface ser usável por todos) e técnicas avançadas de CSS (Grid, Flexbox, animações complexas) para criar interfaces ainda mais responsivas e bonitas.</li>
+                                    <li><strong>Frameworks JavaScript (Passo Opcional, mas Poderoso):</strong> Para interfaces NUI muito grandes e com muitas interações, frameworks como **React**, **Vue.js** ou **Svelte** são um divisor de águas. Eles simplificam o gerenciamento de estado e a construção de componentes. Começar com eles depois de dominar o JavaScript puro pode ser muito gratificante.</li>
+                                    <li><strong>Bancos de Dados:</strong> Para guardar informações de jogadores (inventário, dinheiro, casas) de forma permanente, você precisará de um banco de dados. O conhecimento de SQL (especialmente MySQL) ou NoSQL (como MongoDB) é fundamental para scripts mais complexos.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Foco em Otimização e Segurança:</strong> Sempre que criar algo, pense em como ele pode ser o mais eficiente possível (para evitar lag) e o mais seguro possível (para evitar que trapaceiros explorem seu script). Essas são duas qualidades de um desenvolvedor profissional.</li>
+                        </ul>
+                        <p class="mt-4 text-gray-600">Com dedicação e paixão, você estará no caminho certo para se especializar em desenvolvimento de recursos customizados para servidores de FiveM e criar experiências de jogo verdadeiramente inovadoras e imersivas!</p>
+                    </article>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const apiKey = ""; // Sua chave de API do Google Gemini vai aqui!
+        // IMPORTANTE: Nunca compartilhe esta chave em repositórios públicos.
+        // Se você está usando localmente, pode colar a chave aqui.
+        // Em um ambiente de produção real, use variáveis de ambiente.
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+        // --- Code Block Copy Functionality ---
+        const allCodeBlocks = document.querySelectorAll('.code-block');
+        allCodeBlocks.forEach(block => {
+            const code = block.querySelector('pre code');
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'absolute top-3 right-3 flex space-x-2';
+            
+            const copyButton = document.createElement('button');
+            copyButton.textContent = 'Copiar';
+            copyButton.className = 'bg-gray-700 hover:bg-gray-600 text-white text-sm font-semibold py-1.5 px-3 rounded-md transition-colors shadow-sm';
+            
+            const explainButton = document.createElement('button');
+            explainButton.textContent = 'Explicar Código ✨';
+            explainButton.className = 'bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-1.5 px-3 rounded-md transition-colors shadow-sm';
+
+            const explanationArea = block.querySelector('.explanation-area');
+            const explanationContent = explanationArea.querySelector('.explanation-content');
+            const explanationLoadingSpinner = explanationArea.querySelector('.loading-spinner');
+
+            buttonContainer.appendChild(copyButton);
+            buttonContainer.appendChild(explainButton);
+            block.appendChild(buttonContainer);
+
+            copyButton.addEventListener('click', () => {
+                const tempTextarea = document.createElement('textarea');
+                tempTextarea.value = code.innerText;
+                document.body.appendChild(tempTextarea);
+                tempTextarea.select();
+                try {
+                    document.execCommand('copy');
+                    copyButton.textContent = 'Copiado!';
+                    setTimeout(() => {
+                        copyButton.textContent = 'Copiar';
+                    }, 2000);
+                } catch (err) {
+                    console.error('Falha ao copiar o texto: ', err);
+                    copyButton.textContent = 'Erro!';
+                }
+                document.body.removeChild(tempTextarea);
+            });
+            
+            explainButton.addEventListener('click', async () => {
+                if (apiKey === "") {
+                    explanationArea.classList.remove('hidden');
+                    explanationContent.innerHTML = '<span class="text-red-600">Erro: Chave de API Gemini não configurada. Por favor, insira sua chave no `script.js` para usar este recurso.</span>';
+                    explanationLoadingSpinner.classList.add('hidden');
+                    return;
+                }
+
+                explanationArea.classList.remove('hidden');
+                explanationContent.innerHTML = '';
+                explanationLoadingSpinner.classList.remove('hidden');
+
+                const codeText = code.innerText;
+                const codeLanguage = code.className.replace('language-', '');
+                const prompt = `Explique o seguinte código ${codeLanguage} detalhadamente, descrevendo sua função, as variáveis e funções utilizadas, e o fluxo lógico. Mantenha a explicação focada em um desenvolvedor iniciante em FiveM. Código:\n\n\`\`\`${codeLanguage}\n${codeText}\n\`\`\``;
+                
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        explanationContent.innerHTML = text.replace(/\n/g, '<br>');
+                    } else {
+                        explanationContent.textContent = 'Não foi possível obter uma explicação.';
+                    }
+                } catch (error) {
+                    console.error('Erro ao chamar a API Gemini:', error);
+                    explanationContent.textContent = 'Erro ao se comunicar com a API Gemini. Verifique a chave de API e a conexão. (Detalhes no console do navegador)';
+                } finally {
+                    explanationLoadingSpinner.classList.add('hidden');
+                }
+            });
+        });
+
+        // --- Interactive Flow Diagram ---
+        const flowItems = document.querySelectorAll('.flow-item, .flow-arrow');
+        const infoBox = document.getElementById('flow-info-box');
+        const defaultInfoText = infoBox.textContent;
+
+        flowItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                infoBox.textContent = item.dataset.info;
+            });
+            item.addEventListener('mouseleave', () => {
+                infoBox.textContent = defaultInfoText;
+            });
+        });
+
+        // --- Sidebar & Navigation Generation ---
+        const sections = document.querySelectorAll('main section');
+        const navContainer = document.getElementById('desktop-nav');
+        const mobileNavContainer = document.createElement('div');
+        mobileNavContainer.id = 'mobile-nav';
+        mobileNavContainer.className = 'fixed inset-0 bg-white z-30 p-8 overflow-y-auto transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl';
+        
+        let navHTML = '';
+        sections.forEach(section => {
+            const mainTitle = section.querySelector('h2').innerText;
+            // Remove the leading "X." from the title for cleaner sidebar display
+            const cleanMainTitle = mainTitle.replace(/^\d+\.\s/, ''); 
+            navHTML += `<a href="#${section.id}" class="sidebar-link block font-semibold text-gray-700 hover:text-blue-600 py-2 rounded-md transition-colors duration-150">${cleanMainTitle}</a>`;
+            const articles = section.querySelectorAll('article');
+            if(articles.length > 0){
+                navHTML += '<div class="pl-4 border-l-2 border-gray-200 ml-1">';
+                articles.forEach(article => {
+                    const subTitle = article.querySelector('h3').innerText;
+                    // Remove the leading "X.X " from the subtitle
+                    const cleanSubTitle = subTitle.replace(/^\d+\.\d+\s/, ''); 
+                    navHTML += `<a href="#${article.id}" class="sidebar-link block text-sm text-gray-500 hover:text-blue-500 py-1.5 border-l-2 border-transparent pl-3">${cleanSubTitle}</a>`;
+                });
+                navHTML += '</div>';
+            }
+        });
+        
+        navContainer.innerHTML = navHTML;
+        mobileNavContainer.innerHTML = `<h2 class="text-2xl font-bold mb-6 text-blue-700">Índice</h2>${navHTML}`;
+        document.body.appendChild(mobileNavContainer);
+
+        const allNavLinks = document.querySelectorAll('.sidebar-link');
+
+        // --- Mobile Menu Toggle ---
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        mobileMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mobileNavContainer.classList.toggle('-translate-x-full');
+            document.body.classList.toggle('overflow-hidden'); // Prevent scrolling body when menu is open
+        });
+        document.addEventListener('click', (e) => {
+             if (!mobileNavContainer.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                mobileNavContainer.classList.add('-translate-x-full');
+                document.body.classList.remove('overflow-hidden');
+             }
+        });
+
+        // Close mobile menu on link click
+        mobileNavContainer.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNavContainer.classList.add('-translate-x-full');
+                document.body.classList.remove('overflow-hidden');
+            });
+        });
+
+        // --- Active Link Highlighting on Scroll ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    allNavLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href').substring(1) === entry.target.id) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, { rootMargin: "-30% 0px -60% 0px", threshold: 0 }); // Adjusted rootMargin for better highlight behavior
+
+        document.querySelectorAll('section, article').forEach(el => {
+            observer.observe(el);
+        });
+
+        // --- Challenge Hint Functionality ---
+        const challengeSelect = document.getElementById('challenge-select');
+        const getHintButton = document.getElementById('get-hint-button');
+        const hintArea = document.getElementById('hint-area');
+        const hintContent = hintArea.querySelector('.hint-content');
+        const hintLoadingSpinner = hintArea.querySelector('.loading-spinner');
+
+        getHintButton.addEventListener('click', async () => {
+            const selectedChallenge = challengeSelect.value;
+            if (!selectedChallenge) {
+                hintContent.textContent = 'Por favor, selecione um desafio primeiro.';
+                hintArea.classList.remove('hidden');
+                return;
+            }
+
+            if (apiKey === "") {
+                hintArea.classList.remove('hidden');
+                hintContent.innerHTML = '<span class="text-red-600">Erro: Chave de API Gemini não configurada. Por favor, insira sua chave no `script.js` para usar este recurso.</span>';
+                hintLoadingSpinner.classList.add('hidden');
+                return;
+            }
+
+            hintArea.classList.remove('hidden');
+            hintContent.innerHTML = '';
+            hintLoadingSpinner.classList.remove('hidden');
+
+            const prompt = `Me dê uma dica concisa para o seguinte desafio de desenvolvimento FiveM com NUI e QBcore, focando nos primeiros passos ou em um conceito chave para iniciantes, sem dar a solução completa. Desafio: "${selectedChallenge}"`;
+            
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            const payload = { contents: chatHistory };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    hintContent.innerHTML = text.replace(/\n/g, '<br>');
+                } else {
+                    hintContent.textContent = 'Não foi possível obter uma dica.';
+                }
+            } catch (error) {
+                console.error('Erro ao chamar a API Gemini para dica:', error);
+                hintContent.textContent = 'Erro ao se comunicar com a API Gemini. Verifique a chave de API e a conexão. (Detalhes no console do navegador)';
+            } finally {
+                hintLoadingSpinner.classList.add('hidden');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
