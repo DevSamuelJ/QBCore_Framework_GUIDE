@@ -16,6 +16,9 @@ Este curso é ideal para iniciantes em programação ou para quem já tem alguma
     Boas Práticas: Dicas valiosas sobre validação, segurança e modularização do código para criar scripts robustos e otimizados.
 
 Nosso objetivo é que você não apenas compreenda os conceitos, mas tenha a confiança para colocar a mão na massa e criar suas próprias experiências imersivas no FiveM!
+
+Acesse o curso online aqui!
+🔗 https://devsamuelj.github.io/QBCore_Framework_GUIDE/
 🚀 Próximos Passos e Projetos para Aprofundar
 
 Aprender é uma jornada contínua! Após concluir este curso, desafie-se com os seguintes projetos e ideias para consolidar e expandir seu conhecimento:
